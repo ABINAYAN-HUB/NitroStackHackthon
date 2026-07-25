@@ -164,7 +164,7 @@ export class AddressTools {
 
         const updated = currentClaims.map(c => {
             if (c.dimension === 'location') {
-                return { ...c, status: (addressFound && registryAddressMatch !== false ? 'verified' : 'contradicted') as typeof c.status, evidence: [...c.evidence, addrEvidence] };
+                return { ...c, status: (addressFound && registryAddressMatch !== false && utilityBillAddressMatch !== false ? 'verified' : 'contradicted') as typeof c.status, evidence: [...c.evidence, addrEvidence] };
             }
             return c;
         });
@@ -175,7 +175,7 @@ export class AddressTools {
                 dimension: 'location',
                 label: 'Registered Address',
                 value: args.claimedAddress,
-                status: addressFound && registryAddressMatch !== false ? 'verified' : 'contradicted',
+                status: addressFound && registryAddressMatch !== false && utilityBillAddressMatch !== false ? 'verified' : 'contradicted',
                 evidence: [addrEvidence],
             });
         }

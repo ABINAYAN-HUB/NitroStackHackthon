@@ -98,6 +98,21 @@ async function investigateDeterministic(mcpClient: Client, input: InvestigationI
         log('evidence_challenger', `Extracted ${docData.extractedClaims.length} claims from registration certificate (quality: ${((docData.documentQuality ?? 0) * 100).toFixed(0)}%)`);
     }
 
+    log('orchestrator', `Calling document_reader for utility bill`);
+    const utilResult = await callAndParse(mcpClient, 'document_reader', {
+        caseId: input.caseId,
+        businessName: input.businessName,
+        documentType: 'utility_bill',
+        documentRef: input.documentRef,
+    });
+    const utilData = (utilResult as { data?: { extractedClaims?: unknown[]; } })?.data;
+    if (utilData?.extractedClaims?.length) {
+        const utilAddr = (utilData.extractedClaims[0] as any)?.value;
+        log('evidence_challenger', `Extracted utility bill address: "${utilAddr}"`);
+        // pass it to address checker later
+        (input as any).utilityBillAddress = utilAddr;
+    }
+
     // Step 2: Registry checker
     log('orchestrator', `Step 2/5 — Calling registry_checker — looking up ${input.registrationNumber}`);
     const regResult = await callAndParse(mcpClient, 'registry_checker', {
@@ -118,7 +133,8 @@ async function investigateDeterministic(mcpClient: Client, input: InvestigationI
         caseId: input.caseId,
         businessName: input.businessName,
         claimedAddress: input.claimedAddress,
-        registrationNumber: input.registrationNumber,
+        registryAddress: (regResult as any)?.data?.record?.registeredAddress,
+        utilityBillAddress: (input as any).utilityBillAddress,
     });
     const addrData = (addrResult as { data?: { flags?: string[]; registryAddressMatch?: boolean } })?.data;
     if (addrData?.flags?.length) {

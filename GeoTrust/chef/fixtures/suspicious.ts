@@ -7,7 +7,7 @@ export const SUSPICIOUS_FIXTURE = {
     caseId: 'case-002',
     businessName: 'Coimbatore Steels & Alloys Pvt Ltd',
     registrationNumber: 'U27100TN2015PTC098765',
-    claimedAddress: '15, SIDCO Industrial Estate, Coimbatore, Tamil Nadu 641021',
+    claimedAddress: '42, Unknown Street, Mumbai, Maharashtra 400001',
     incorporationYear: 2015,
     documentRef: 'STEEL-REG-CERT',
 };
