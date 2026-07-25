@@ -88,6 +88,32 @@ async function callAndParse(mcpClient: Client, name: string, args: Record<string
     return result.content;
 }
 
+// ── Helper: Live UI Sync ───────────────────────────────────────────────────────
+async function syncLiveCase(mcpClient: Client, input: InvestigationInput, trace: TraceEvent[]) {
+    try {
+        const scoreResult = await callAndParse(mcpClient, 'score_case', { caseId: input.caseId, businessName: input.businessName });
+        const liveCase = scoreResult as Case;
+        liveCase.trace = [...trace];
+        liveCase.status = 'investigating'; // Keep it polling
+        
+        const fs = await import('fs');
+        const path = await import('path');
+        const liveCasesPath = path.join(process.cwd(), '../geotrust-dashboard/lib/live-cases.json');
+        let existing: Case[] = [];
+        if (fs.existsSync(liveCasesPath)) existing = JSON.parse(fs.readFileSync(liveCasesPath, 'utf8'));
+        
+        const index = existing.findIndex(c => c.id === liveCase.id);
+        if (index >= 0) existing[index] = liveCase;
+        else existing.push(liveCase);
+        
+        fs.writeFileSync(liveCasesPath, JSON.stringify(existing, null, 2));
+        const cp = await import('child_process');
+        cp.execSync('npx tsx scripts/sync-db.ts', { cwd: path.join(process.cwd(), '../geotrust-dashboard'), stdio: 'ignore' });
+    } catch (e) {
+        // Ignore errors during iterative sync
+    }
+}
+
 // ── Deterministic fallback investigation ─────────────────────────────────────
 // When NVIDIA NIM is unavailable, this drives the investigation tools in order.
 async function investigateDeterministic(mcpClient: Client, input: InvestigationInput, trace: TraceEvent[], log: (agent: TraceEvent['agent'], message: string) => void): Promise<Case> {
@@ -113,6 +139,7 @@ async function investigateDeterministic(mcpClient: Client, input: InvestigationI
         businessName: input.businessName,
         documentRef: input.documentRef,
     });
+    await syncLiveCase(mcpClient, input, trace);
 
     // 1b. Udyam / MSME Registration (if applicable)
     if (input.entityType === 'MSME' || input.businessName.includes('Micro')) {
@@ -153,6 +180,7 @@ async function investigateDeterministic(mcpClient: Client, input: InvestigationI
         businessName: input.businessName,
         documentRef: input.documentRef,
     });
+    await syncLiveCase(mcpClient, input, trace);
 
     // 1f. Utility Bill (Location Cross-check)
     log('orchestrator', `Calling document_reader for utility bill`);
@@ -179,6 +207,7 @@ async function investigateDeterministic(mcpClient: Client, input: InvestigationI
         claimedLat: 12.9715, // Let's say the applicant claims they are here
         claimedLng: 77.5945,
     });
+    await syncLiveCase(mcpClient, input, trace);
 
     // Step 2: Registry checker
     log('orchestrator', `Step 2/5 — Calling registry_checker — looking up ${input.registrationNumber}`);
@@ -195,6 +224,7 @@ async function investigateDeterministic(mcpClient: Client, input: InvestigationI
     } else if (regData?.nameMatch && regData?.isActive) {
         log('evidence_challenger', 'Registry match confirmed — name, status, and registration number align');
     }
+    await syncLiveCase(mcpClient, input, trace);
 
     // Step 3: Address checker
     log('orchestrator', `Step 3/5 — Calling address_checker — verifying "${input.claimedAddress}"`);
@@ -214,6 +244,23 @@ async function investigateDeterministic(mcpClient: Client, input: InvestigationI
     } else if (addrData?.registryAddressMatch === true) {
         log('evidence_challenger', 'Address verified — matches registry filing');
     }
+    await syncLiveCase(mcpClient, input, trace);
+
+    // Step 3.5: Fraud Network Checker
+    log('orchestrator', `Step 3.5/5 — Calling fraud_network_checker for ${input.businessName}`);
+    const fraudResult = await callAndParse(mcpClient, 'fraud_network_checker', {
+        caseId: input.caseId,
+        businessName: input.businessName,
+        directorName: (regResult as any)?.data?.record?.directorName || 'Unknown',
+        registrationNumber: input.registrationNumber,
+    });
+    const fraudData = (fraudResult as any)?.data;
+    if (fraudData?.matchFound) {
+        log('risk_arbiter', `🚨 FRAUD RING DETECTED: Director linked to bad actors. Reason: ${fraudData.details.reason}`);
+    } else {
+        log('evidence_challenger', 'No known fraud network links detected.');
+    }
+    await syncLiveCase(mcpClient, input, trace);
 
     // Step 4: Web presence checker
     log('orchestrator', `Step 4/5 — Calling web_presence_checker — assessing digital footprint`);
@@ -228,6 +275,7 @@ async function investigateDeterministic(mcpClient: Client, input: InvestigationI
     } else {
         log('evidence_challenger', 'Digital footprint assessment complete — no major red flags');
     }
+    await syncLiveCase(mcpClient, input, trace);
 
     // Step 5: Score case
     log('risk_arbiter', 'Step 5/5 — All evidence gathered — calling score_case to compute final verdict');
@@ -239,6 +287,23 @@ async function investigateDeterministic(mcpClient: Client, input: InvestigationI
     const finalCase = scoreResult as Case;
     finalCase.trace = trace;
     log('risk_arbiter', `Verdict: ${finalCase.recommendation.toUpperCase()} — score ${finalCase.overallScore}/100. ${finalCase.recommendationReason}`);
+
+    // Fire Discord webhook alert if escalated
+    if (finalCase.recommendation === 'escalate') {
+        const msg = `🚨 **FRAUD ALERT** 🚨\\n**Business**: ${finalCase.businessName}\\n**Verdict**: ESCALATE (Score: ${finalCase.overallScore}/100)\\n**Reason**: ${finalCase.recommendationReason}`;
+        if (process.env.DISCORD_WEBHOOK_URL) {
+            try {
+                await fetch(process.env.DISCORD_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content: msg })
+                });
+                log('risk_arbiter', `[WEBHOOK] Alert dispatched to Discord.`);
+            } catch (e) { }
+        } else {
+            log('risk_arbiter', `[WEBHOOK SIMULATION] -> ${msg.replace(/\\n/g, ' ')}`);
+        }
+    }
 
     return finalCase;
 }

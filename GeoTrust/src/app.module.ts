@@ -5,6 +5,7 @@ import { AddressModule } from './modules/address/address.module.js';
 import { WebPresenceModule } from './modules/web-presence/web-presence.module.js';
 import { ScoringModule } from './modules/scoring/scoring.module.js';
 import { CaseStoreModule } from './modules/case-store/case-store.module.js';
+import { FraudNetworkModule } from './modules/fraud-network/fraud-network.module.js';
 
 /**
  * Root Application Module — GeoTrust AI
@@ -32,6 +33,7 @@ import { CaseStoreModule } from './modules/case-store/case-store.module.js';
         AddressModule,
         WebPresenceModule,
         ScoringModule,
+        FraudNetworkModule
     ],
     providers: [
         { provide: 'OAUTH_CONFIG', useValue: { resourceUri: 'http://localhost' } }
