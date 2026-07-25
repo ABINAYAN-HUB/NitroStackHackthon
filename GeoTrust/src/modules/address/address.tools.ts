@@ -71,54 +71,27 @@ export class AddressTools {
         const normalise = (s: string) => s.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(Boolean);
         const claimedTokens = normalise(args.claimedAddress);
 
-        let addressFound = false;
         let matchedZone: typeof ADDRESS_DB[0] | undefined;
-        let confidence = 0.4;
-        const flags: string[] = [];
-
-        try {
-            // Live Real-World API Check (OpenStreetMap)
-            const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(args.claimedAddress)}&format=json&limit=1`, {
-                headers: { 'User-Agent': 'GeoTrust-AI-Hackathon-Agent/1.0' }
-            });
-            const data = await res.json() as any[];
-            if (data && data.length > 0) {
-                addressFound = true;
-                confidence = 0.85;
-                matchedZone = {
-                    keywords: [],
-                    lat: parseFloat(data[0].lat),
-                    lng: parseFloat(data[0].lon),
-                    zone: 'Verified via Live OpenStreetMap API',
-                    isCommercial: true,
-                    isResidential: false,
-                    isIndustrial: false
-                };
-            }
-        } catch (e) {}
-
-        if (!addressFound) {
-            // Fallback to mock DB if offline/rate-limited
-            let bestScore = 0;
-            for (const zone of ADDRESS_DB) {
-                const score = zone.keywords.filter(k => claimedTokens.includes(k) ||
-                    claimedTokens.some(t => k.includes(t) || t.includes(k))).length;
-                if (score > bestScore) { bestScore = score; matchedZone = zone; }
-            }
-            addressFound = bestScore >= 1;
-            if (addressFound && matchedZone) {
-                confidence = 0.7 + (Math.min(bestScore, 4) / 4) * 0.25;
-            }
+        let bestScore = 0;
+        for (const zone of ADDRESS_DB) {
+            const score = zone.keywords.filter(k => claimedTokens.includes(k) ||
+                claimedTokens.some(t => k.includes(t) || t.includes(k))).length;
+            if (score > bestScore) { bestScore = score; matchedZone = zone; }
         }
 
-        if (!addressFound) {
-            flags.push(`Address "${args.claimedAddress}" could not be verified against live maps or known zones`);
-            confidence = 0.35;
-        } else if (matchedZone && matchedZone.zone !== 'Verified via Live OpenStreetMap API') {
+        const addressFound = bestScore >= 1;
+        const flags: string[] = [];
+        let confidence = 0.4;
+
+        if (addressFound && matchedZone) {
+            confidence = 0.7 + (Math.min(bestScore, 4) / 4) * 0.25;
             if (matchedZone.isResidential && !matchedZone.isCommercial && !matchedZone.isIndustrial) {
                 flags.push(`Address appears to be a residential zone (${matchedZone.zone}) — unusual for a manufacturing/trading business`);
                 confidence -= 0.15;
             }
+        } else {
+            flags.push(`Address "${args.claimedAddress}" could not be verified against known commercial/industrial zones`);
+            confidence = 0.35;
         }
 
         // Cross-check registry address
@@ -158,7 +131,7 @@ export class AddressTools {
             flags: string[];
         }> = {
             ok: addressFound,
-            source: 'Live OpenStreetMap API (Nominatim)',
+            source: 'Address Verification Service (Mock GIS Data)',
             data: {
                 addressFound,
                 zone: matchedZone?.zone ?? null,
