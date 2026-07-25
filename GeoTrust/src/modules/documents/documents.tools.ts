@@ -133,80 +133,18 @@ export class DocumentsTools {
         const doc = MOCK_DOCUMENTS[docKey];
         const quality = doc?.documentQuality ?? 0.6;
 
-        let extractedClaims: Partial<Claim>[] = [];
-        let sourceLabel = '';
-
-        if (args.documentType === 'registration_certificate' && doc) {
-            sourceLabel = 'Document OCR — Registration Certificate';
-            extractedClaims = [
-                {
-                    id: `${args.caseId}-doc-name`,
-                    dimension: 'identity',
-                    label: 'Business Name',
-                    value: doc.name,
-                    status: 'pending',
-                    evidence: [{
-                        id: `ev-doc-name-${Date.now()}`,
-                        source: sourceLabel,
-                        snippet: `Name extracted from registration certificate: "${doc.name}"`,
-                        retrievedAt: now,
-                        reliability: quality,
-                        relation: 'supports',
-                    }],
-                },
-                {
-                    id: `${args.caseId}-doc-regnum`,
-                    dimension: 'identity',
-                    label: 'Registration Number',
-                    value: doc.registrationNumber,
-                    status: 'pending',
-                    evidence: [{
-                        id: `ev-doc-regnum-${Date.now()}`,
-                        source: sourceLabel,
-                        snippet: `Registration number: ${doc.registrationNumber}`,
-                        retrievedAt: now,
-                        reliability: quality,
-                        relation: 'supports',
-                    }],
-                },
-                {
-                    id: `${args.caseId}-doc-address`,
-                    dimension: 'location',
-                    label: 'Registered Address',
-                    value: doc.address,
-                    status: 'pending',
-                    evidence: [{
-                        id: `ev-doc-addr-${Date.now()}`,
-                        source: sourceLabel,
-                        snippet: `Address on certificate: "${doc.address}"`,
-                        retrievedAt: now,
-                        reliability: quality,
-                        relation: 'supports',
-                    }],
-                },
-                {
-                    id: `${args.caseId}-doc-director`,
-                    dimension: 'identity',
-                    label: 'Director Name',
-                    value: doc.directorName,
-                    status: 'pending',
-                    evidence: [{
-                        id: `ev-doc-dir-${Date.now()}`,
-                        source: sourceLabel,
-                        snippet: `Director: ${doc.directorName}`,
         let sourceLabel = 'Document OCR — Registration Certificate';
-
-        extractedClaims = [
+        let extractedClaims: Partial<Claim>[] = [
             {
                 id: `${args.caseId}-doc-name`,
                 dimension: 'identity',
                 label: 'Business Name',
-                value: doc.name,
+                value: doc?.name ?? 'Not legible',
                 status: 'pending',
                 evidence: [{
                     id: `ev-doc-name-${Date.now()}`,
                     source: sourceLabel,
-                    snippet: `Name extracted from registration certificate: "${doc.name}"`,
+                    snippet: `Name extracted from registration certificate: "${doc?.name}"`,
                     retrievedAt: now,
                     reliability: quality,
                     relation: 'supports',
@@ -216,12 +154,12 @@ export class DocumentsTools {
                 id: `${args.caseId}-doc-regnum`,
                 dimension: 'identity',
                 label: 'Registration Number',
-                value: doc.registrationNumber,
+                value: doc?.registrationNumber ?? 'Not legible',
                 status: 'pending',
                 evidence: [{
                     id: `ev-doc-regnum-${Date.now()}`,
                     source: sourceLabel,
-                    snippet: `Registration number: ${doc.registrationNumber}`,
+                    snippet: `Registration number: ${doc?.registrationNumber}`,
                     retrievedAt: now,
                     reliability: quality,
                     relation: 'supports',
@@ -231,12 +169,12 @@ export class DocumentsTools {
                 id: `${args.caseId}-doc-address`,
                 dimension: 'location',
                 label: 'Registered Address',
-                value: doc.address,
+                value: doc?.address ?? 'Not legible',
                 status: 'pending',
                 evidence: [{
                     id: `ev-doc-addr-${Date.now()}`,
                     source: sourceLabel,
-                    snippet: `Address on certificate: "${doc.address}"`,
+                    snippet: `Address on certificate: "${doc?.address}"`,
                     retrievedAt: now,
                     reliability: quality,
                     relation: 'supports',
@@ -246,12 +184,12 @@ export class DocumentsTools {
                 id: `${args.caseId}-doc-director`,
                 dimension: 'identity',
                 label: 'Director Name',
-                value: doc.directorName,
+                value: doc?.directorName ?? 'Not legible',
                 status: 'pending',
                 evidence: [{
                     id: `ev-doc-dir-${Date.now()}`,
                     source: sourceLabel,
-                    snippet: `Director: ${doc.directorName}`,
+                    snippet: `Director: ${doc?.directorName}`,
                     retrievedAt: now,
                     reliability: quality,
                     relation: 'supports',
@@ -266,7 +204,7 @@ export class DocumentsTools {
         }> = {
             status: 'success',
             ok: true,
-            source: sourceLabel || 'Document OCR',
+            source: sourceLabel,
             data: {
                 extractedClaims,
                 documentQuality: quality,
@@ -278,7 +216,6 @@ export class DocumentsTools {
 
         this.caseStore.addToolResult(args.caseId, result as ToolResult);
 
-        // Merge claims into state
         const existing = state.claims;
         const merged = [...existing];
         for (const ec of extractedClaims) {
@@ -305,12 +242,12 @@ export class DocumentsTools {
         const doc = MOCK_DOCUMENTS[docKey];
         const quality = doc?.documentQuality ?? 0.6;
         
-        const sourceLabel = 'Document OCR — Utility Bill';
+        let sourceLabel = 'Document OCR — Utility Bill';
         const utilityAddress = docKey === 'STEEL-REG-CERT'
             ? '8, Anna Nagar, Coimbatore, Tamil Nadu 641002' 
             : doc?.address ?? 'Address not legible';
             
-        const extractedClaims: Partial<Claim>[] = [{
+        let extractedClaims: Partial<Claim>[] = [{
             id: `${args.caseId}-util-address`,
             dimension: 'location',
             label: 'Utility Bill Address',
@@ -326,7 +263,11 @@ export class DocumentsTools {
             }],
         }];
 
-        return {
+        const result: ToolResult<{
+            extractedClaims: Partial<Claim>[];
+            documentQuality: number;
+            documentType: string;
+        }> = {
             status: 'success',
             ok: true,
             source: sourceLabel,
@@ -337,7 +278,82 @@ export class DocumentsTools {
             },
             confidence: quality * 0.9,
             retrievedAt: now,
-        } as ToolResult;
+        };
+
+        this.caseStore.addToolResult(args.caseId, result as ToolResult);
+
+        const existing = state.claims;
+        const merged = [...existing];
+        for (const ec of extractedClaims) {
+            const idx = merged.findIndex(c => c.id === ec.id);
+            if (idx === -1) merged.push(ec as Claim);
+            else merged[idx] = { ...merged[idx], ...ec };
+        }
+        this.caseStore.updateClaims(args.caseId, merged);
+
+        return result;
+    }
+
+    @Tool({
+        name: 'extractIdentityDocument',
+        description: 'Identity Sub-agent: Extract director name from an identity document (PAN/Aadhaar).',
+        inputSchema: DocumentReaderSchema,
+    })
+    async extractIdentityDocument(args: z.infer<typeof DocumentReaderSchema>) {
+        const state = this.caseStore.getOrCreate(args.caseId, args.businessName);
+        const now = new Date().toISOString();
+        const docKey = args.documentRef ?? Object.keys(MOCK_DOCUMENTS).find(k =>
+            MOCK_DOCUMENTS[k].name.toLowerCase().includes(args.businessName.toLowerCase().split(' ')[0])
+        ) ?? 'REG-CERT';
+        const doc = MOCK_DOCUMENTS[docKey];
+        const quality = doc?.documentQuality ?? 0.6;
+        
+        let sourceLabel = 'Document OCR — Identity Document';
+        let extractedClaims: Partial<Claim>[] = [{
+            id: `${args.caseId}-id-director`,
+            dimension: 'identity',
+            label: 'Director Name (ID)',
+            value: doc?.directorName ?? 'Not legible',
+            status: 'pending',
+            evidence: [{
+                id: `ev-id-${Date.now()}`,
+                source: sourceLabel,
+                snippet: `Director name from Aadhaar/PAN: ${doc?.directorName ?? 'Not legible'}`,
+                retrievedAt: now,
+                reliability: quality,
+                relation: 'supports',
+            }],
+        }];
+
+        const result: ToolResult<{
+            extractedClaims: Partial<Claim>[];
+            documentQuality: number;
+            documentType: string;
+        }> = {
+            status: 'success',
+            ok: true,
+            source: sourceLabel,
+            data: {
+                extractedClaims,
+                documentQuality: quality,
+                documentType: 'identity_document',
+            },
+            confidence: quality,
+            retrievedAt: now,
+        };
+
+        this.caseStore.addToolResult(args.caseId, result as ToolResult);
+
+        const existing = state.claims;
+        const merged = [...existing];
+        for (const ec of extractedClaims) {
+            const idx = merged.findIndex(c => c.id === ec.id);
+            if (idx === -1) merged.push(ec as Claim);
+            else merged[idx] = { ...merged[idx], ...ec };
+        }
+        this.caseStore.updateClaims(args.caseId, merged);
+
+        return result;
     }
 
     // New specific tools based on the SME verification priority
