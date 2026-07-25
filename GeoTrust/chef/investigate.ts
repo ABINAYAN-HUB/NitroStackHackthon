@@ -94,8 +94,8 @@ async function investigateDeterministic(mcpClient: Client, input: InvestigationI
     log('orchestrator', `Starting deterministic investigation for ${input.businessName}`);
 
     // Step 1: Document reader
-    log('orchestrator', `Step 1/5 — Calling document_reader for registration certificate`);
-    const docResult = await callAndParse(mcpClient, 'document_reader', {
+    log('orchestrator', `Step 1/5 — Calling extractRegistrationCertificate`);
+    const docResult = await callAndParse(mcpClient, 'extractRegistrationCertificate', {
         caseId: input.caseId,
         businessName: input.businessName,
         documentType: 'registration_certificate',
@@ -155,8 +155,8 @@ async function investigateDeterministic(mcpClient: Client, input: InvestigationI
     });
 
     // 1f. Utility Bill (Location Cross-check)
-    log('orchestrator', `Calling document_reader for utility bill`);
-    const utilResult = await callAndParse(mcpClient, 'document_reader', {
+    log('orchestrator', `Calling extractUtilityBill for utility bill`);
+    const utilResult = await callAndParse(mcpClient, 'extractUtilityBill', {
         caseId: input.caseId,
         businessName: input.businessName,
         documentType: 'utility_bill',

@@ -92,8 +92,8 @@ export class DocumentsTools {
     constructor(private readonly caseStore: CaseStoreService) { }
 
     @Tool({
-        name: 'document_reader',
-        description: 'Extract structured claims (business name, registration number, address, incorporation date, director) from an uploaded document. Returns partial Claim objects with status "pending" until cross-checked by other tools.',
+        name: 'extractRegistrationCertificate',
+        description: 'Identity Sub-agent: Extract structured claims (business name, registration number, address, incorporation date, director) from a registration certificate.',
         inputSchema: DocumentReaderSchema,
         examples: {
             request: {
@@ -121,7 +121,7 @@ export class DocumentsTools {
             }
         }
     })
-    async documentReader(args: z.infer<typeof DocumentReaderSchema>) {
+    async extractRegistrationCertificate(args: z.infer<typeof DocumentReaderSchema>) {
         const state = this.caseStore.getOrCreate(args.caseId, args.businessName);
         const now = new Date().toISOString();
 
@@ -194,51 +194,70 @@ export class DocumentsTools {
                         id: `ev-doc-dir-${Date.now()}`,
                         source: sourceLabel,
                         snippet: `Director: ${doc.directorName}`,
-                        retrievedAt: now,
-                        reliability: quality,
-                        relation: 'supports',
-                    }],
-                },
-            ];
-        } else if (args.documentType === 'utility_bill') {
-            sourceLabel = 'Document OCR — Utility Bill';
-            // Utility bill address might differ (simulates the contradiction in case-002)
-            const utilityAddress = docKey === 'STEEL-REG-CERT'
-                ? '8, Anna Nagar, Coimbatore, Tamil Nadu 641002'  // MISMATCH — different from reg cert
-                : doc?.address ?? 'Address not legible';
-            extractedClaims = [{
-                id: `${args.caseId}-util-address`,
-                dimension: 'location',
-                label: 'Utility Bill Address',
-                value: utilityAddress,
-                status: 'pending',
-                evidence: [{
-                    id: `ev-util-addr-${Date.now()}`,
-                    source: sourceLabel,
-                    snippet: `Address on utility bill: "${utilityAddress}"`,
-                    retrievedAt: now,
-                    reliability: quality * 0.9,
-                    relation: 'supports',
-                }],
-            }];
-        } else if (args.documentType === 'identity_document') {
-            sourceLabel = 'Document OCR — Identity Document';
-            extractedClaims = [{
-                id: `${args.caseId}-id-director`,
+        let sourceLabel = 'Document OCR — Registration Certificate';
+
+        extractedClaims = [
+            {
+                id: `${args.caseId}-doc-name`,
                 dimension: 'identity',
-                label: 'Director Name (ID)',
-                value: doc?.directorName ?? 'Not legible',
+                label: 'Business Name',
+                value: doc.name,
                 status: 'pending',
                 evidence: [{
-                    id: `ev-id-${Date.now()}`,
+                    id: `ev-doc-name-${Date.now()}`,
                     source: sourceLabel,
-                    snippet: `Director name from Aadhaar/PAN: ${doc?.directorName ?? 'Not legible'}`,
+                    snippet: `Name extracted from registration certificate: "${doc.name}"`,
                     retrievedAt: now,
                     reliability: quality,
                     relation: 'supports',
                 }],
-            }];
-        }
+            },
+            {
+                id: `${args.caseId}-doc-regnum`,
+                dimension: 'identity',
+                label: 'Registration Number',
+                value: doc.registrationNumber,
+                status: 'pending',
+                evidence: [{
+                    id: `ev-doc-regnum-${Date.now()}`,
+                    source: sourceLabel,
+                    snippet: `Registration number: ${doc.registrationNumber}`,
+                    retrievedAt: now,
+                    reliability: quality,
+                    relation: 'supports',
+                }],
+            },
+            {
+                id: `${args.caseId}-doc-address`,
+                dimension: 'location',
+                label: 'Registered Address',
+                value: doc.address,
+                status: 'pending',
+                evidence: [{
+                    id: `ev-doc-addr-${Date.now()}`,
+                    source: sourceLabel,
+                    snippet: `Address on certificate: "${doc.address}"`,
+                    retrievedAt: now,
+                    reliability: quality,
+                    relation: 'supports',
+                }],
+            },
+            {
+                id: `${args.caseId}-doc-director`,
+                dimension: 'identity',
+                label: 'Director Name',
+                value: doc.directorName,
+                status: 'pending',
+                evidence: [{
+                    id: `ev-doc-dir-${Date.now()}`,
+                    source: sourceLabel,
+                    snippet: `Director: ${doc.directorName}`,
+                    retrievedAt: now,
+                    reliability: quality,
+                    relation: 'supports',
+                }],
+            },
+        ];
 
         const result: ToolResult<{
             extractedClaims: Partial<Claim>[];
@@ -251,7 +270,7 @@ export class DocumentsTools {
             data: {
                 extractedClaims,
                 documentQuality: quality,
-                documentType: args.documentType,
+                documentType: 'registration_certificate',
             },
             confidence: quality,
             retrievedAt: now,
@@ -270,6 +289,55 @@ export class DocumentsTools {
         this.caseStore.updateClaims(args.caseId, merged);
 
         return result;
+    }
+
+    @Tool({
+        name: 'extractUtilityBill',
+        description: 'Location Sub-agent: Extract structured claims (utility bill address) from a utility bill document.',
+        inputSchema: DocumentReaderSchema,
+    })
+    async extractUtilityBill(args: z.infer<typeof DocumentReaderSchema>) {
+        const state = this.caseStore.getOrCreate(args.caseId, args.businessName);
+        const now = new Date().toISOString();
+        const docKey = args.documentRef ?? Object.keys(MOCK_DOCUMENTS).find(k =>
+            MOCK_DOCUMENTS[k].name.toLowerCase().includes(args.businessName.toLowerCase().split(' ')[0])
+        ) ?? 'REG-CERT';
+        const doc = MOCK_DOCUMENTS[docKey];
+        const quality = doc?.documentQuality ?? 0.6;
+        
+        const sourceLabel = 'Document OCR — Utility Bill';
+        const utilityAddress = docKey === 'STEEL-REG-CERT'
+            ? '8, Anna Nagar, Coimbatore, Tamil Nadu 641002' 
+            : doc?.address ?? 'Address not legible';
+            
+        const extractedClaims: Partial<Claim>[] = [{
+            id: `${args.caseId}-util-address`,
+            dimension: 'location',
+            label: 'Utility Bill Address',
+            value: utilityAddress,
+            status: 'pending',
+            evidence: [{
+                id: `ev-util-addr-${Date.now()}`,
+                source: sourceLabel,
+                snippet: `Address on utility bill: "${utilityAddress}"`,
+                retrievedAt: now,
+                reliability: quality * 0.9,
+                relation: 'supports',
+            }],
+        }];
+
+        return {
+            status: 'success',
+            ok: true,
+            source: sourceLabel,
+            data: {
+                extractedClaims,
+                documentQuality: quality,
+                documentType: 'utility_bill',
+            },
+            confidence: quality * 0.9,
+            retrievedAt: now,
+        } as ToolResult;
     }
 
     // New specific tools based on the SME verification priority
