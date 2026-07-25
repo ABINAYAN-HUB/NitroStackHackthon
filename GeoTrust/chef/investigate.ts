@@ -436,8 +436,8 @@ async function main() {
 
         // Sync to Prisma database for the dashboard
         try {
-            const { execSync } = require('child_process');
-            execSync('npx tsx scripts/sync-db.ts', { cwd: path.join(process.cwd(), '../geotrust-dashboard'), stdio: 'inherit' });
+            const cp = await import('child_process');
+            cp.execSync('npx tsx scripts/sync-db.ts', { cwd: path.join(process.cwd(), '../geotrust-dashboard'), stdio: 'inherit' });
         } catch (e) {
             console.error('Failed to sync cases to Prisma database:', e);
         }
