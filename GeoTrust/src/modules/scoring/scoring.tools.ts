@@ -194,18 +194,18 @@ export class ScoringTools {
 
         const contradictionCount = contradictions.length;
         const hasMultipleUnexplainedRedFlags =
-            contradictionCount >= 2 &&
-            dimensionScores.filter(d => d.score < 50).length >= 2;
+            contradictionCount >= 2 ||
+            (contradictionCount >= 1 && dimensionScores.filter(d => d.score < 50).length >= 1);
 
         if (overallScore >= 75 && contradictionCount === 0 && missingEvidence.length <= 1) {
             recommendation = 'proceed';
             recommendationReason = 'All four dimensions verified with strong evidence; no unresolved contradictions.';
             caseStatus = 'cleared';
-        } else if (hasMultipleUnexplainedRedFlags || overallScore < 35) {
+        } else if (hasMultipleUnexplainedRedFlags || overallScore < 60) {
             recommendation = 'escalate';
             recommendationReason = `Multiple independent red flags across ${contradictionCount} dimensions — manual review by senior credit officer required.`;
             caseStatus = 'escalated';
-        } else if (missingEvidence.length >= 3 && overallScore < 50) {
+        } else if (missingEvidence.length >= 3 && overallScore < 65) {
             recommendation = 'flag_insufficient';
             recommendationReason = 'Insufficient evidence across critical dimensions — investigation cannot reach a reliable conclusion without additional documents.';
             caseStatus = 'needs_review';

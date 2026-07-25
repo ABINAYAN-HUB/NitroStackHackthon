@@ -8,6 +8,8 @@ const RegistryCheckerSchema = z.object({
     businessName: z.string().describe('Business name to look up'),
     registrationNumber: z.string().describe('Registration/CIN/UDYAM number to verify'),
     claimedAddress: z.string().optional().describe('Address claimed by the applicant for cross-check'),
+    gstNumber: z.string().optional().describe('GST number to verify against registry'),
+    tradeLicenseNumber: z.string().optional().describe('Trade license number to verify'),
 });
 
 @Injectable({ deps: [CaseStoreService] })
@@ -95,6 +97,18 @@ export class RegistryTools {
             const monthsSinceFiling = (Date.now() - lastFiling.getTime()) / (1000 * 60 * 60 * 24 * 30);
             if (monthsSinceFiling > 18) {
                 flags.push(`Annual filing overdue — last filed ${record.lastFilingDate} (${Math.round(monthsSinceFiling)} months ago)`);
+                confidence -= 0.1;
+            }
+
+            // Check GST cross-reference if provided
+            if (args.gstNumber && record.gstNumber && args.gstNumber !== record.gstNumber) {
+                flags.push(`GST mismatch: registry shows "${record.gstNumber}", claimed "${args.gstNumber}"`);
+                confidence -= 0.15;
+            }
+            
+            // Check Trade License cross-reference (mock logic: assume valid if provided for active businesses)
+            if (args.tradeLicenseNumber && !isActive) {
+                flags.push(`Trade License provided, but central registry shows business is ${record.status}`);
                 confidence -= 0.1;
             }
         } else {

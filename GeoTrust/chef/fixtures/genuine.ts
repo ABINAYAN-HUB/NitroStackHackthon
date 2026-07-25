@@ -6,4 +6,9 @@ export const GENUINE_FIXTURE = {
     claimedAddress: '42, MG Road, Bengaluru, Karnataka 560001',
     incorporationYear: 2018,
     documentRef: 'REG-CERT',
+    entityType: 'Pvt Ltd',
+    isGstRegistered: true,
+    premises: 'owned',
+    businessAgeMonths: 60,
+    loanType: 'Secured',
 };

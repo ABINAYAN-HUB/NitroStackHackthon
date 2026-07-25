@@ -10,6 +10,12 @@ const MOCK_DOCUMENTS: Record<string, {
     incorporationDate: string;
     directorName: string;
     documentQuality: number; // 0-1
+    pan?: string;
+    gstNumber?: string;
+    udyamNumber?: string;
+    tradeLicenseNumber?: string;
+    ownershipType?: 'owned' | 'rented';
+    photoLocation?: { lat: number; lng: number };
 }> = {
     'REG-CERT': {
         name: 'Priya Textiles Pvt Ltd',
@@ -18,6 +24,11 @@ const MOCK_DOCUMENTS: Record<string, {
         incorporationDate: '2018-03-15',
         directorName: 'Priya Venkataraman',
         documentQuality: 0.97,
+        pan: 'ABCDE1234F',
+        gstNumber: '29AAAPP1234F1Z5',
+        tradeLicenseNumber: 'TL/BLR/2018/4521',
+        ownershipType: 'owned',
+        photoLocation: { lat: 12.9715, lng: 77.5945 }, // Close to MG Road
     },
     'STEEL-REG-CERT': {
         name: 'Coimbatore Steels & Alloys Pvt Ltd',
@@ -26,6 +37,11 @@ const MOCK_DOCUMENTS: Record<string, {
         incorporationDate: '2015-07-20',
         directorName: 'Rajesh Murugesan',
         documentQuality: 0.91,
+        pan: 'INVALID123',
+        gstNumber: '33AAACP9876A1Z1',
+        tradeLicenseNumber: 'TL/CBE/2015/098',
+        ownershipType: 'rented',
+        photoLocation: { lat: 11.0100, lng: 76.9500 }, // Mismatch location slightly
     },
     'DIGITAL-REG-CERT': {
         name: 'Namma Digital Solutions LLP',
@@ -33,7 +49,9 @@ const MOCK_DOCUMENTS: Record<string, {
         address: '78, 5th Block, Koramangala, Bengaluru, Karnataka 560095',
         incorporationDate: '2021-11-01',
         directorName: 'Arun Kumar Pillai',
-        documentQuality: 0.43, // poor quality — blurry scan
+        documentQuality: 0.43,
+        pan: 'MNBVC3456K',
+        ownershipType: 'rented',
     },
     'APEX-REG-CERT': {
         name: 'Apex Micro Enterprises',
@@ -42,6 +60,12 @@ const MOCK_DOCUMENTS: Record<string, {
         incorporationDate: '2019-05-10',
         directorName: 'Senthil Krishnamurthy',
         documentQuality: 0.88,
+        pan: 'PLMKO6789J',
+        udyamNumber: 'UDYAM-TN-06-0012345',
+        gstNumber: '33AAGPA5678B1Z9',
+        tradeLicenseNumber: 'TL/TPR/2019/332',
+        ownershipType: 'owned',
+        photoLocation: { lat: 11.1085, lng: 77.3411 }, // Matches Kamaraj Nagar
     },
     'VENKATESWARA-REG-CERT': {
         name: 'Sri Venkateswara Exports',
@@ -50,6 +74,9 @@ const MOCK_DOCUMENTS: Record<string, {
         incorporationDate: '2016-09-22',
         directorName: 'Hari Prasad Rao',
         documentQuality: 0.82,
+        pan: 'QWERT1122P',
+        gstNumber: '37AATHR7654C1Z3',
+        ownershipType: 'owned',
     },
 };
 
@@ -241,5 +268,280 @@ export class DocumentsTools {
         this.caseStore.updateClaims(args.caseId, merged);
 
         return result;
+    }
+
+    // New specific tools based on the SME verification priority
+    
+    @Tool({
+        name: 'extractPAN',
+        description: 'Extract and validate PAN card format (regex) from the provided document.',
+        inputSchema: z.object({
+            caseId: z.string(),
+            businessName: z.string(),
+            documentRef: z.string().optional(),
+        }),
+    })
+    async extractPAN(args: { caseId: string; businessName: string; documentRef?: string }) {
+        const docKey = args.documentRef ?? 'REG-CERT';
+        const doc = MOCK_DOCUMENTS[docKey];
+        const state = this.caseStore.getOrCreate(args.caseId, args.businessName);
+        const pan = doc?.pan ?? 'UNKNOWN';
+        const quality = doc?.documentQuality ?? 0.6;
+        
+        const isValid = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(pan);
+        
+        const evidence: Evidence = {
+            id: `ev-pan-${Date.now()}`,
+            source: 'PAN Extractor',
+            snippet: `Extracted PAN: ${pan} (Format valid: ${isValid})`,
+            retrievedAt: new Date().toISOString(),
+            reliability: quality,
+            relation: isValid ? 'supports' : 'contradicts',
+        };
+        
+        const claim: Claim = {
+            id: `${args.caseId}-pan`,
+            dimension: 'identity',
+            label: 'PAN',
+            value: pan,
+            status: isValid ? 'verified' : 'contradicted',
+            evidence: [evidence]
+        };
+        
+        const existing = state.claims;
+        const idx = existing.findIndex(c => c.id === claim.id);
+        if (idx === -1) existing.push(claim);
+        else existing[idx] = { ...existing[idx], ...claim };
+        
+        this.caseStore.updateClaims(args.caseId, existing);
+        return { ok: true, data: { pan, isValid } };
+    }
+
+    @Tool({
+        name: 'extractUdyamCertificate',
+        description: 'Extract Udyam/MSME Certificate details.',
+        inputSchema: z.object({
+            caseId: z.string(),
+            businessName: z.string(),
+            documentRef: z.string().optional(),
+        }),
+    })
+    async extractUdyamCertificate(args: { caseId: string; businessName: string; documentRef?: string }) {
+        const docKey = args.documentRef ?? 'REG-CERT';
+        const doc = MOCK_DOCUMENTS[docKey];
+        const state = this.caseStore.getOrCreate(args.caseId, args.businessName);
+        const udyam = doc?.udyamNumber ?? doc?.registrationNumber ?? 'UNKNOWN';
+        
+        const evidence: Evidence = {
+            id: `ev-udyam-${Date.now()}`,
+            source: 'Udyam Extractor',
+            snippet: `Extracted Udyam Number: ${udyam}`,
+            retrievedAt: new Date().toISOString(),
+            reliability: doc?.documentQuality ?? 0.6,
+            relation: 'supports',
+        };
+        
+        const claim: Claim = {
+            id: `${args.caseId}-udyam`,
+            dimension: 'identity',
+            label: 'Udyam Number',
+            value: udyam,
+            status: 'pending',
+            evidence: [evidence]
+        };
+        
+        const existing = state.claims;
+        const idx = existing.findIndex(c => c.id === claim.id);
+        if (idx === -1) existing.push(claim);
+        else existing[idx] = { ...existing[idx], ...claim };
+        
+        this.caseStore.updateClaims(args.caseId, existing);
+        return { ok: true, data: { udyamNumber: udyam } };
+    }
+
+    @Tool({
+        name: 'extractGSTCertificate',
+        description: 'Extract GST Registration details.',
+        inputSchema: z.object({
+            caseId: z.string(),
+            businessName: z.string(),
+            documentRef: z.string().optional(),
+        }),
+    })
+    async extractGSTCertificate(args: { caseId: string; businessName: string; documentRef?: string }) {
+        const docKey = args.documentRef ?? 'REG-CERT';
+        const doc = MOCK_DOCUMENTS[docKey];
+        const state = this.caseStore.getOrCreate(args.caseId, args.businessName);
+        const gst = doc?.gstNumber;
+        
+        if (!gst) return { ok: false, data: { error: 'No GST number found in document' } };
+        
+        const evidence: Evidence = {
+            id: `ev-gst-${Date.now()}`,
+            source: 'GST Extractor',
+            snippet: `Extracted GST Number: ${gst}`,
+            retrievedAt: new Date().toISOString(),
+            reliability: doc?.documentQuality ?? 0.6,
+            relation: 'supports',
+        };
+        
+        const claim: Claim = {
+            id: `${args.caseId}-gst`,
+            dimension: 'identity',
+            label: 'GST Number',
+            value: gst,
+            status: 'pending',
+            evidence: [evidence]
+        };
+        
+        const existing = state.claims;
+        const idx = existing.findIndex(c => c.id === claim.id);
+        if (idx === -1) existing.push(claim);
+        else existing[idx] = { ...existing[idx], ...claim };
+        
+        this.caseStore.updateClaims(args.caseId, existing);
+        return { ok: true, data: { gstNumber: gst } };
+    }
+
+    @Tool({
+        name: 'extractTradeLicense',
+        description: 'Extract Shop & Establishment / Trade License.',
+        inputSchema: z.object({
+            caseId: z.string(),
+            businessName: z.string(),
+            documentRef: z.string().optional(),
+        }),
+    })
+    async extractTradeLicense(args: { caseId: string; businessName: string; documentRef?: string }) {
+        const docKey = args.documentRef ?? 'REG-CERT';
+        const doc = MOCK_DOCUMENTS[docKey];
+        const state = this.caseStore.getOrCreate(args.caseId, args.businessName);
+        const tradeLicense = doc?.tradeLicenseNumber;
+        
+        if (!tradeLicense) return { ok: false, data: { error: 'No Trade License found' } };
+        
+        const evidence: Evidence = {
+            id: `ev-trade-${Date.now()}`,
+            source: 'Trade License Extractor',
+            snippet: `Extracted Trade License: ${tradeLicense}`,
+            retrievedAt: new Date().toISOString(),
+            reliability: doc?.documentQuality ?? 0.6,
+            relation: 'supports',
+        };
+        
+        const claim: Claim = {
+            id: `${args.caseId}-trade`,
+            dimension: 'identity',
+            label: 'Trade License',
+            value: tradeLicense,
+            status: 'pending',
+            evidence: [evidence]
+        };
+        
+        const existing = state.claims;
+        const idx = existing.findIndex(c => c.id === claim.id);
+        if (idx === -1) existing.push(claim);
+        else existing[idx] = { ...existing[idx], ...claim };
+        
+        this.caseStore.updateClaims(args.caseId, existing);
+        return { ok: true, data: { tradeLicenseNumber: tradeLicense } };
+    }
+
+    @Tool({
+        name: 'extractOwnershipProof',
+        description: 'Extract property ownership or rent agreement details.',
+        inputSchema: z.object({
+            caseId: z.string(),
+            businessName: z.string(),
+            documentRef: z.string().optional(),
+        }),
+    })
+    async extractOwnershipProof(args: { caseId: string; businessName: string; documentRef?: string }) {
+        const docKey = args.documentRef ?? 'REG-CERT';
+        const doc = MOCK_DOCUMENTS[docKey];
+        const state = this.caseStore.getOrCreate(args.caseId, args.businessName);
+        const ownershipType = doc?.ownershipType ?? 'rented';
+        
+        const evidence: Evidence = {
+            id: `ev-ownership-${Date.now()}`,
+            source: 'Ownership Extractor',
+            snippet: `Premises identified as: ${ownershipType}`,
+            retrievedAt: new Date().toISOString(),
+            reliability: doc?.documentQuality ?? 0.6,
+            relation: 'supports',
+        };
+        
+        const claim: Claim = {
+            id: `${args.caseId}-ownership`,
+            dimension: 'location',
+            label: 'Premises Ownership',
+            value: ownershipType,
+            status: 'pending',
+            evidence: [evidence]
+        };
+        
+        const existing = state.claims;
+        const idx = existing.findIndex(c => c.id === claim.id);
+        if (idx === -1) existing.push(claim);
+        else existing[idx] = { ...existing[idx], ...claim };
+        
+        this.caseStore.updateClaims(args.caseId, existing);
+        return { ok: true, data: { ownershipType } };
+    }
+
+    @Tool({
+        name: 'checkPremisesPhoto',
+        description: 'Check business premises photo metadata (GPS EXIF) against claimed address location.',
+        inputSchema: z.object({
+            caseId: z.string(),
+            businessName: z.string(),
+            claimedLat: z.number().optional(),
+            claimedLng: z.number().optional(),
+            documentRef: z.string().optional(),
+        }),
+    })
+    async checkPremisesPhoto(args: { caseId: string; businessName: string; claimedLat?: number; claimedLng?: number; documentRef?: string }) {
+        const docKey = args.documentRef ?? 'REG-CERT';
+        const doc = MOCK_DOCUMENTS[docKey];
+        const state = this.caseStore.getOrCreate(args.caseId, args.businessName);
+        
+        if (!doc?.photoLocation) {
+            return { ok: false, data: { error: 'No premises photo available with EXIF data' } };
+        }
+        
+        let match = false;
+        let snippet = `Photo EXIF Location: [${doc.photoLocation.lat}, ${doc.photoLocation.lng}]`;
+        if (args.claimedLat && args.claimedLng) {
+            // Very simple distance mock
+            const dist = Math.abs(args.claimedLat - doc.photoLocation.lat) + Math.abs(args.claimedLng - doc.photoLocation.lng);
+            match = dist < 0.05;
+            snippet += ` - Matches claimed address coords: ${match}`;
+        }
+        
+        const evidence: Evidence = {
+            id: `ev-photo-${Date.now()}`,
+            source: 'Premises Photo Metadata',
+            snippet,
+            retrievedAt: new Date().toISOString(),
+            reliability: 0.95, // EXIF data is generally reliable if present
+            relation: match ? 'supports' : (args.claimedLat ? 'contradicts' : 'supports'),
+        };
+        
+        const claim: Claim = {
+            id: `${args.caseId}-photo`,
+            dimension: 'location',
+            label: 'Photo GPS Verification',
+            value: `${doc.photoLocation.lat}, ${doc.photoLocation.lng}`,
+            status: match ? 'verified' : (args.claimedLat ? 'contradicted' : 'pending'),
+            evidence: [evidence]
+        };
+        
+        const existing = state.claims;
+        const idx = existing.findIndex(c => c.id === claim.id);
+        if (idx === -1) existing.push(claim);
+        else existing[idx] = { ...existing[idx], ...claim };
+        
+        this.caseStore.updateClaims(args.caseId, existing);
+        return { ok: true, data: { photoLocation: doc.photoLocation, match } };
     }
 }

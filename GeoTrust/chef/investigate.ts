@@ -69,6 +69,13 @@ interface InvestigationInput {
     claimedAddress: string;
     incorporationYear: number;
     documentRef: string;
+    
+    // New fields for Business Profile Branching
+    entityType: 'Sole Proprietor' | 'Partnership' | 'LLP' | 'Pvt Ltd' | 'MSME';
+    isGstRegistered: boolean;
+    premises: 'owned' | 'rented';
+    businessAgeMonths: number;
+    loanType: 'Secured' | 'Unsecured';
 }
 
 // ── Helper: call an MCP tool and parse the result ────────────────────────────
@@ -98,6 +105,55 @@ async function investigateDeterministic(mcpClient: Client, input: InvestigationI
         log('evidence_challenger', `Extracted ${docData.extractedClaims.length} claims from registration certificate (quality: ${((docData.documentQuality ?? 0) * 100).toFixed(0)}%)`);
     }
 
+    // 1a. PAN Extraction
+    log('orchestrator', `Calling extractPAN for identity verification`);
+    await callAndParse(mcpClient, 'extractPAN', {
+        caseId: input.caseId,
+        businessName: input.businessName,
+        documentRef: input.documentRef,
+    });
+
+    // 1b. Udyam / MSME Registration (if applicable)
+    if (input.entityType === 'MSME' || input.businessName.includes('Micro')) {
+        log('orchestrator', `Calling extractUdyamCertificate`);
+        await callAndParse(mcpClient, 'extractUdyamCertificate', {
+            caseId: input.caseId,
+            businessName: input.businessName,
+            documentRef: input.documentRef,
+        });
+    }
+
+    // 1c. GST Extraction (if registered)
+    let extractedGstNumber: string | undefined;
+    if (input.isGstRegistered) {
+        log('orchestrator', `Calling extractGSTCertificate`);
+        const gstResult = await callAndParse(mcpClient, 'extractGSTCertificate', {
+            caseId: input.caseId,
+            businessName: input.businessName,
+            documentRef: input.documentRef,
+        });
+        extractedGstNumber = (gstResult as any)?.data?.gstNumber;
+    }
+
+    // 1d. Trade License Extraction
+    let extractedTradeLicense: string | undefined;
+    log('orchestrator', `Calling extractTradeLicense`);
+    const tradeResult = await callAndParse(mcpClient, 'extractTradeLicense', {
+        caseId: input.caseId,
+        businessName: input.businessName,
+        documentRef: input.documentRef,
+    });
+    extractedTradeLicense = (tradeResult as any)?.data?.tradeLicenseNumber;
+
+    // 1e. Ownership Proof
+    log('orchestrator', `Calling extractOwnershipProof for ${input.premises} premises`);
+    await callAndParse(mcpClient, 'extractOwnershipProof', {
+        caseId: input.caseId,
+        businessName: input.businessName,
+        documentRef: input.documentRef,
+    });
+
+    // 1f. Utility Bill (Location Cross-check)
     log('orchestrator', `Calling document_reader for utility bill`);
     const utilResult = await callAndParse(mcpClient, 'document_reader', {
         caseId: input.caseId,
@@ -109,9 +165,19 @@ async function investigateDeterministic(mcpClient: Client, input: InvestigationI
     if (utilData?.extractedClaims?.length) {
         const utilAddr = (utilData.extractedClaims[0] as any)?.value;
         log('evidence_challenger', `Extracted utility bill address: "${utilAddr}"`);
-        // pass it to address checker later
         (input as any).utilityBillAddress = utilAddr;
     }
+
+    // 1g. Premises Photo Check
+    log('orchestrator', `Calling checkPremisesPhoto`);
+    await callAndParse(mcpClient, 'checkPremisesPhoto', {
+        caseId: input.caseId,
+        businessName: input.businessName,
+        documentRef: input.documentRef,
+        // Mock a claimed GPS coordinate to trigger verification
+        claimedLat: 12.9715, // Let's say the applicant claims they are here
+        claimedLng: 77.5945,
+    });
 
     // Step 2: Registry checker
     log('orchestrator', `Step 2/5 — Calling registry_checker — looking up ${input.registrationNumber}`);
@@ -119,6 +185,8 @@ async function investigateDeterministic(mcpClient: Client, input: InvestigationI
         caseId: input.caseId,
         businessName: input.businessName,
         registrationNumber: input.registrationNumber,
+        gstNumber: extractedGstNumber,
+        tradeLicenseNumber: extractedTradeLicense,
     });
     const regData = (regResult as { data?: { flags?: string[]; nameMatch?: boolean; isActive?: boolean } })?.data;
     if (regData?.flags?.length) {

@@ -13,4 +13,9 @@ export const AMBIGUOUS_FIXTURE = {
     claimedAddress: '22, Kamaraj Nagar, Tiruppur, Tamil Nadu 641604',
     incorporationYear: 2019,
     documentRef: 'APEX-REG-CERT',
+    entityType: 'MSME',
+    isGstRegistered: true,
+    premises: 'owned',
+    businessAgeMonths: 60,
+    loanType: 'Secured',
 };

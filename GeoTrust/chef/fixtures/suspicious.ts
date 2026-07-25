@@ -7,7 +7,12 @@ export const SUSPICIOUS_FIXTURE = {
     caseId: 'case-002',
     businessName: 'Coimbatore Steels & Alloys Pvt Ltd',
     registrationNumber: 'U27100TN2015PTC098765',
-    claimedAddress: '42, Unknown Street, Mumbai, Maharashtra 400001',
+    claimedAddress: '42, Unknown Street, Chennai, Tamil Nadu 600001',
     incorporationYear: 2015,
     documentRef: 'STEEL-REG-CERT',
+    entityType: 'Pvt Ltd',
+    isGstRegistered: true,
+    premises: 'rented',
+    businessAgeMonths: 96,
+    loanType: 'Unsecured',
 };
