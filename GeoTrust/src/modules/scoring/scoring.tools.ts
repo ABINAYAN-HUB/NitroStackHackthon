@@ -50,7 +50,7 @@ export class ScoringTools {
 
         // Helper: get tool results by source keyword
         const getResults = (keyword: string) =>
-            rawToolResults.filter(r => r.source.toLowerCase().includes(keyword));
+            rawToolResults.filter(r => r.source?.toLowerCase().includes(keyword));
 
         // IDENTITY — registry + document OCR name/reg number claims
         const identityClaims = claims.filter(c => c.dimension === 'identity');
@@ -62,7 +62,7 @@ export class ScoringTools {
         const identityContradicted = identityClaims.some(c => c.status === 'contradicted');
         const identityVerified = identityClaims.filter(c => c.status === 'verified').length;
         const identityConfidence = registryResults.length > 0
-            ? registryResults.reduce((a, r) => a + r.confidence, 0) / registryResults.length
+            ? registryResults.reduce((a, r) => a + (r.confidence ?? 0), 0) / registryResults.length
             : 0.4;
 
         if (identityContradicted) {
@@ -88,7 +88,7 @@ export class ScoringTools {
         const locationContradicted = locationClaims.some(c => c.status === 'contradicted');
         const locationVerified = locationClaims.filter(c => c.status === 'verified').length;
         const addrConfidence = addressResults.length > 0
-            ? addressResults.reduce((a, r) => a + r.confidence, 0) / addressResults.length
+            ? addressResults.reduce((a, r) => a + (r.confidence ?? 0), 0) / addressResults.length
             : 0.3;
 
         if (locationContradicted) {
@@ -111,7 +111,7 @@ export class ScoringTools {
         let digitalScore = 40;
         let digitalDriver = 'No digital presence data';
         const webConfidence = webResults.length > 0
-            ? webResults.reduce((a, r) => a + r.confidence, 0) / webResults.length
+            ? webResults.reduce((a, r) => a + (r.confidence ?? 0), 0) / webResults.length
             : 0.3;
 
         if (webResults.length > 0) {
@@ -136,7 +136,7 @@ export class ScoringTools {
         let docIntegrityScore = 50;
         let docIntegrityDriver = 'No documents submitted';
         const docConfidence = docResults.length > 0
-            ? docResults.reduce((a, r) => a + r.confidence, 0) / docResults.length
+            ? docResults.reduce((a, r) => a + (r.confidence ?? 0), 0) / docResults.length
             : 0.5;
 
         if (docResults.length > 0) {

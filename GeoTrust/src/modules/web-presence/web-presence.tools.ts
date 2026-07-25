@@ -180,6 +180,7 @@ export class WebPresenceTools {
             averageRating: number | null;
             flags: string[];
         }> = {
+            status: 'success',
             ok: !!presenceData,
             source: 'Web Presence Analysis (Mock OSINT)',
             data: {

@@ -130,6 +130,7 @@ export class AddressTools {
             utilityBillAddressMatch: boolean | null;
             flags: string[];
         }> = {
+            status: 'success',
             ok: addressFound,
             source: 'Address Verification Service (Mock GIS Data)',
             data: {

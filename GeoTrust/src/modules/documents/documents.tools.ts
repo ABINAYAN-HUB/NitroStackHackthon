@@ -103,6 +103,7 @@ export class DocumentsTools {
                 documentRef: 'REG-CERT',
             },
             response: {
+                status: 'success',
                 ok: true,
                 source: 'Document OCR — Registration Certificate',
                 confidence: 0.97,
@@ -244,6 +245,7 @@ export class DocumentsTools {
             documentQuality: number;
             documentType: string;
         }> = {
+            status: 'success',
             ok: true,
             source: sourceLabel || 'Document OCR',
             data: {
@@ -418,7 +420,7 @@ export class DocumentsTools {
         const state = this.caseStore.getOrCreate(args.caseId, args.businessName);
         const tradeLicense = doc?.tradeLicenseNumber;
         
-        if (!tradeLicense) return { ok: false, data: { error: 'No Trade License found' } };
+        if (!tradeLicense) return { ok: false, data: { error: 'No Trade License found' }, status: 'error' };
         
         const evidence: Evidence = {
             id: `ev-trade-${Date.now()}`,

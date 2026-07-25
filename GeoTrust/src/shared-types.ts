@@ -51,12 +51,16 @@ export interface Case {
 
 // Backend-only, not needed by the dashboard:
 export interface ToolResult<T = unknown> {
-  ok: boolean;
-  source: string;
-  data: T;
+  status: "success" | "failed" | "timeout";
+  error?: string;
+  data?: T;
+  
+  // Legacy fields (to be phased out or updated)
+  ok?: boolean;
+  source?: string;
   matchesClaim?: boolean;
-  confidence: number;        // 0-1
-  retrievedAt: string;
+  confidence?: number;
+  retrievedAt?: string;
 }
 
 export interface CaseState {
