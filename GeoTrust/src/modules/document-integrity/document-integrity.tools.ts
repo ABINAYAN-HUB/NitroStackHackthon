@@ -57,32 +57,25 @@ export class DocumentIntegrityTools {
             // (In production: const pdfDoc = await PDFDocument.load(buffer); const info = pdfDoc.getTitle() etc.)
             type DocMeta = { creationDate: string; modificationDate: string; producer: string; creator: string; pageCount: number };
             const metadataDB: Record<string, DocMeta> = {
-                'REG-CERT': {
-                    creationDate: '2018-04-01T10:30:00Z',
-                    modificationDate: '2018-04-01T10:30:00Z',  // Same day — genuine gov doc
+                'KAV-REG-CERT': {
+                    creationDate: '2020-04-10T10:30:00Z',
+                    modificationDate: '2020-04-10T10:30:00Z',
                     producer: 'Government of India e-Filing System',
                     creator: 'MCA Portal',
                     pageCount: 1,
                 },
-                'STEEL-REG-CERT': {
-                    creationDate: '2023-06-15T10:30:00Z',
-                    modificationDate: '2024-01-10T14:22:00Z',  // Modified months later
-                    producer: 'Microsoft Word 2019',            // Word = red flag for gov docs
-                    creator: 'Rajesh-PC',                       // Created on personal PC
+                'NEX-REG-CERT': {
+                    creationDate: '2022-08-15T10:30:00Z',
+                    modificationDate: '2023-01-10T14:22:00Z',  // Modified later
+                    producer: 'Adobe Photoshop CC',            // Photoshop = major red flag
+                    creator: 'Unknown',
                     pageCount: 1,
                 },
-                'APEX-REG-CERT': {
-                    creationDate: '2019-06-01T08:00:00Z',
-                    modificationDate: '2019-06-15T09:00:00Z',  // 14 days later — minor
+                'BAL-REG-CERT': {
+                    creationDate: '2012-05-20T08:00:00Z',
+                    modificationDate: '2012-05-20T09:00:00Z',
                     producer: 'Government of India e-Filing System',
                     creator: 'UDYAM Portal',
-                    pageCount: 1,
-                },
-                'DIGITAL-REG-CERT': {
-                    creationDate: '2024-01-05T12:00:00Z',
-                    modificationDate: '2024-01-06T03:00:00Z',
-                    producer: 'Adobe Photoshop CC',             // Photoshop = major red flag
-                    creator: 'Unknown',
                     pageCount: 1,
                 },
             };

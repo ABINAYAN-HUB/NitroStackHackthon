@@ -60,128 +60,81 @@ export interface MockDocument {
  */
 export const APPLICANT_DOCUMENTS: Record<string, MockDocument> = {
     // ─── Case 1: Genuine (should pass) ───────────────────────────────────
-    'REG-CERT': {
-        refKey: 'REG-CERT',
-        businessName: 'Priya Textiles Pvt Ltd',
-        registrationNumber: 'U17111KA2018PTC112345',
-        address: '42, MG Road, Bengaluru, Karnataka 560001',
-        incorporationDate: '2018-03-15',
-        directorName: 'Priya Venkataraman',
-        documentQuality: 0.97,
-        pan: 'AACCP1234F',       // Valid PAN: 4th char C = Company (correct for Pvt Ltd)
-        gstNumber: '29AACCP1234F1Z5', // Real GSTIN format: 29(state) + PAN + 1Z5
-        tradeLicenseNumber: 'TL/BLR/2018/4521',
+    'KAV-REG-CERT': {
+        refKey: 'KAV-REG-CERT',
+        businessName: 'Kaveri AgriTech Pvt Ltd',
+        registrationNumber: 'U01111KA2020PTC334455',
+        address: '10, Farm Road, Mysuru, Karnataka 570001',
+        incorporationDate: '2020-04-10',
+        directorName: 'Suresh Patel',
+        documentQuality: 0.98,
+        pan: 'AACCK3344F',
+        gstNumber: '29AACCK3344F1Z8',
+        tradeLicenseNumber: 'TL/MYS/2020/0012',
         ownershipType: 'owned',
-        photoLocation: { lat: 12.9715, lng: 77.5945 },
-        utilityBillAddress: '42, MG Road, Bengaluru, Karnataka 560001', // Matches
-        bankAccountName: 'Priya Textiles Pvt Ltd',
-        bankAccountNumber: '1234567890123456',
-        ifscCode: 'SBIN0001234',
-        monthlyTransactions: 45,
-        avgMonthlyBalance: 850000,
-        lastTransactionDate: '2024-01-10',
-        annualTurnover: 12000000,
+        photoLocation: { lat: 12.2958, lng: 76.6394 },
+        utilityBillAddress: '10, Farm Road, Mysuru, Karnataka 570001',
+        bankAccountName: 'Kaveri AgriTech Pvt Ltd',
+        bankAccountNumber: '3456789012345678',
+        ifscCode: 'SBIN0003456',
+        monthlyTransactions: 55,
+        avgMonthlyBalance: 1200000,
+        lastTransactionDate: '2024-01-20',
+        annualTurnover: 15000000,
         itrFilingYear: '2023-24',
         entityType: 'Pvt Ltd',
-        udyamNumber: undefined, // Not an MSME
     },
 
-    // ─── Case 2: Suspicious (should flag) ────────────────────────────────
-    'STEEL-REG-CERT': {
-        refKey: 'STEEL-REG-CERT',
-        businessName: 'Coimbatore Steels & Alloys Pvt Ltd',
-        registrationNumber: 'U27100TN2015PTC098765',
-        address: '15, SIDCO Industrial Estate, Coimbatore, Tamil Nadu 641021',
-        incorporationDate: '2015-07-20',
-        directorName: 'Rajesh Murugesan',
-        documentQuality: 0.91,
-        pan: 'INVALID123',       // INVALID PAN format — should be caught
-        gstNumber: '33AAACP9876A1Z1', // PAN portion doesn't match claimed PAN
-        tradeLicenseNumber: 'TL/CBE/2015/098',
+    // ─── Case 2: Fraud Shell (should escalate) ───────────────────────────
+    'NEX-REG-CERT': {
+        refKey: 'NEX-REG-CERT',
+        businessName: 'Nexus Global Trading LLC', // LLC vs LLP mismatch
+        registrationNumber: 'U51909MH2022LLP123456', // Does not match registry
+        address: '99, Marine Drive, Mumbai, Maharashtra 400020',
+        incorporationDate: '2022-08-15',
+        directorName: 'Amit Singh',
+        documentQuality: 0.85,
+        pan: 'INVALID889', // Invalid PAN format
+        gstNumber: '27AAACN1234E1Z4',
+        tradeLicenseNumber: 'TL/MUM/2022/998',
         ownershipType: 'rented',
-        photoLocation: { lat: 11.0100, lng: 76.9500 }, // Slight mismatch from claimed address
-        utilityBillAddress: '8, Anna Nagar, Coimbatore, Tamil Nadu 641002', // MISMATCH!
-        bankAccountName: 'Coimbatore Steel Works',  // Name mismatch with business name!
-        bankAccountNumber: '9876543210987654',
-        ifscCode: 'ICIC0001234',
-        monthlyTransactions: 3,    // Very low activity
-        avgMonthlyBalance: 25000,  // Very low balance
-        lastTransactionDate: '2023-06-15', // 7 months ago — stale
-        annualTurnover: 500000,    // Very low for a steel company
-        itrFilingYear: '2022-23',
-        entityType: 'Pvt Ltd',
+        photoLocation: { lat: 18.5204, lng: 73.8567 }, // Location in Pune, far from claimed Mumbai address
+        utilityBillAddress: '15, Fake Street, Pune, Maharashtra 411001', // Mismatch
+        bankAccountName: 'Nexus Traders', // Mismatch
+        bankAccountNumber: '9988776655443322',
+        ifscCode: 'ICIC0009988',
+        monthlyTransactions: 2, // Low activity
+        avgMonthlyBalance: 5000, // Very low balance
+        lastTransactionDate: '2023-01-10', // Stale
+        annualTurnover: 250000,
+        itrFilingYear: '2021-22', // Old ITR
+        entityType: 'LLC',
     },
 
-    // ─── Case 3: Ambiguous (needs more evidence) ─────────────────────────
-    'APEX-REG-CERT': {
-        refKey: 'APEX-REG-CERT',
-        businessName: 'Apex Micro Enterprises',
-        registrationNumber: 'UDYAM-TN-06-0012345',
-        address: '22, Kamaraj Nagar, Tiruppur, Tamil Nadu 641604',
-        incorporationDate: '2019-05-10',
-        directorName: 'Senthil Krishnamurthy',
-        documentQuality: 0.88,
-        pan: 'PLMKO6789J',       // Valid PAN format
-        udyamNumber: 'UDYAM-TN-06-0012345', // Valid Udyam format
-        gstNumber: '33AAGPA5678B1Z9',
-        tradeLicenseNumber: 'TL/TPR/2019/332',
-        ownershipType: 'owned',
-        photoLocation: { lat: 11.1085, lng: 77.3411 },
-        utilityBillAddress: '22, Kamaraj Nagar, Tiruppur, Tamil Nadu 641604', // Matches
-        bankAccountName: 'Apex Micro Enterprises',
-        bankAccountNumber: '5678901234567890',
-        ifscCode: 'HDFC0002345',
-        monthlyTransactions: 18,
-        avgMonthlyBalance: 320000,
-        lastTransactionDate: '2024-01-08',
-        annualTurnover: 4500000,
-        itrFilingYear: '2023-24',
-        entityType: 'MSME',
-    },
-
-    // ─── Case 4: Digital-only (no physical presence) ─────────────────────
-    'DIGITAL-REG-CERT': {
-        refKey: 'DIGITAL-REG-CERT',
-        businessName: 'Namma Digital Solutions LLP',
-        registrationNumber: 'AAH-2345',
-        address: '78, 5th Block, Koramangala, Bengaluru, Karnataka 560095',
-        incorporationDate: '2021-11-01',
-        directorName: 'Arun Kumar Pillai',
-        documentQuality: 0.43,    // Very poor quality documents
-        pan: 'MNBVC3456K',       // Valid PAN format but low quality scan
+    // ─── Case 3: Ambiguous (needs evidence) ──────────────────────────────
+    'BAL-REG-CERT': {
+        refKey: 'BAL-REG-CERT',
+        businessName: 'Balaji Hardware Store',
+        registrationNumber: 'UDYAM-TN-02-9876543',
+        address: '15, Market Street, Madurai, Tamil Nadu 625001',
+        incorporationDate: '2012-05-20',
+        directorName: 'Rajan Kumar',
+        documentQuality: 0.72,
+        pan: 'AAPB1111C', // Missing one char (9 chars instead of 10)
+        udyamNumber: 'UDYAM-TN-02-9876543',
+        gstNumber: '33AAGPB1111C1Z7',
+        tradeLicenseNumber: 'TL/MAD/2012/111',
         ownershipType: 'rented',
-        utilityBillAddress: '78, 5th Block, Koramangala, Bengaluru, Karnataka 560095',
-        bankAccountName: 'Namma Digital Solutions',  // Missing "LLP"
-        bankAccountNumber: '1111222233334444',
-        ifscCode: 'UTIB0003456',
-        monthlyTransactions: 8,
-        avgMonthlyBalance: 150000,
-        lastTransactionDate: '2024-01-05',
-        annualTurnover: 1800000,
-        itrFilingYear: '2023-24',
-        entityType: 'LLP',
-    },
-
-    // ─── Case 5: Export business ──────────────────────────────────────────
-    'VENKATESWARA-REG-CERT': {
-        refKey: 'VENKATESWARA-REG-CERT',
-        businessName: 'Sri Venkateswara Exports',
-        registrationNumber: 'IEC-0316054321',
-        address: '9, Beach Road, Visakhapatnam, Andhra Pradesh 530001',
-        incorporationDate: '2016-09-22',
-        directorName: 'Hari Prasad Rao',
-        documentQuality: 0.82,
-        pan: 'QWERT1122P',       // Valid PAN format
-        gstNumber: '37AATHR7654C1Z3',
-        ownershipType: 'owned',
-        bankAccountName: 'Sri Venkateswara Exports',
-        bankAccountNumber: '7890123456789012',
-        ifscCode: 'SBIN0004567',
-        monthlyTransactions: 25,
-        avgMonthlyBalance: 520000,
-        lastTransactionDate: '2024-01-12',
-        annualTurnover: 8500000,
+        photoLocation: { lat: 9.9252, lng: 78.1198 },
+        utilityBillAddress: '15, Market Street, Madurai, Tamil Nadu 625001', // Match
+        bankAccountName: 'Balaji Hardware Store',
+        bankAccountNumber: '1122334455667788',
+        ifscCode: 'HDFC0001122',
+        monthlyTransactions: 120, // High activity, typical for retail
+        avgMonthlyBalance: 350000,
+        lastTransactionDate: '2024-01-22',
+        annualTurnover: 4000000,
         itrFilingYear: '2023-24',
         entityType: 'Proprietorship',
-    },
+    }
 };
