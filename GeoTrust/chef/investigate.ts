@@ -196,9 +196,9 @@ async function investigateDeterministic(mcpClient: Client, input: InvestigationI
         log('evidence_challenger', 'Registry match confirmed — name, status, and registration number align');
     }
 
-    // Step 3: Address checker
-    log('orchestrator', `Step 3/5 — Calling address_checker — verifying "${input.claimedAddress}"`);
-    const addrResult = await callAndParse(mcpClient, 'address_checker', {
+    // Step 3: Location verification (verifyAddress)
+    log('orchestrator', `Step 3/5 — Calling verifyAddress`);
+    const addrResult = await callAndParse(mcpClient, 'verifyAddress', {
         caseId: input.caseId,
         businessName: input.businessName,
         claimedAddress: input.claimedAddress,
@@ -257,7 +257,7 @@ async function investigateWithLLM(mcpClient: Client, input: InvestigationInput, 
 - Case ID: ${input.caseId}
 - Document Reference: ${input.documentRef}
 
-Run all four investigation tools (document_reader, registry_checker, address_checker, web_presence_checker), 
+Run all four investigation tools (document_reader, registry_checker, verifyAddress, web_presence_checker), 
 then call score_case to finalize the assessment.`
         },
     ];
