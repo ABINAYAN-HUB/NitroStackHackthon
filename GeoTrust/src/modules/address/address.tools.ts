@@ -42,7 +42,7 @@ export class AddressTools {
                 }
             });
             if (response.ok) {
-                const results = await response.json();
+                const results = await response.json() as any[];
                 if (results && results.length > 0) {
                     geocodeData = results[0];
                     addressFound = true;
