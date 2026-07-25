@@ -192,7 +192,11 @@ export class IdentityTools {
                 flags.push(`PAN embedded in GSTIN ("${embeddedPAN}") does not match submitted PAN ("${doc.pan}")`);
             }
 
-            const claimStatus = isFormatValid && checksumValid && stateCodeValid ? 'verified' : 'contradicted';
+            const claimStatus = isFormatValid && checksumValid && stateCodeValid
+                ? 'verified'
+                : !isFormatValid || !stateCodeValid || (doc.pan && !panMatchesGSTIN && embeddedPAN)
+                    ? 'contradicted'  // Hard failure: format invalid, bad state code, or PAN mismatch
+                    : 'pending';       // Checksum-only failure: needs manual verification
 
             const evidence: Evidence = {
                 id: `ev-gst-${Date.now()}`,

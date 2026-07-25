@@ -68,8 +68,8 @@ export const APPLICANT_DOCUMENTS: Record<string, MockDocument> = {
         incorporationDate: '2018-03-15',
         directorName: 'Priya Venkataraman',
         documentQuality: 0.97,
-        pan: 'AACPP1234F',       // Valid PAN: 4th char P = Person (but company should be C)
-        gstNumber: '29AACPP1234F1Z5', // Real GSTIN format: 29(state) + PAN + 1Z5
+        pan: 'AACCP1234F',       // Valid PAN: 4th char C = Company (correct for Pvt Ltd)
+        gstNumber: '29AACCP1234F1Z5', // Real GSTIN format: 29(state) + PAN + 1Z5
         tradeLicenseNumber: 'TL/BLR/2018/4521',
         ownershipType: 'owned',
         photoLocation: { lat: 12.9715, lng: 77.5945 },
