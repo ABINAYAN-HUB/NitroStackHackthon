@@ -25,6 +25,7 @@ import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js'
 import { GENUINE_FIXTURE } from './fixtures/genuine.js';
 import { SUSPICIOUS_FIXTURE } from './fixtures/suspicious.js';
 import { AMBIGUOUS_FIXTURE } from './fixtures/ambiguous.js';
+import { vibrantFixture } from './fixtures/vibrant.js';
 import type { Case, TraceEvent } from '../src/shared-types.js';
 
 // ── NVIDIA NIM client ─────────────────────────────────────────────────────────
@@ -397,7 +398,7 @@ async function main() {
     if (fixtureArg === 'genuine') inputs = [GENUINE_FIXTURE];
     else if (fixtureArg === 'suspicious') inputs = [SUSPICIOUS_FIXTURE];
     else if (fixtureArg === 'ambiguous') inputs = [AMBIGUOUS_FIXTURE];
-    else if (fixtureArg === 'all') inputs = [GENUINE_FIXTURE, SUSPICIOUS_FIXTURE, AMBIGUOUS_FIXTURE];
+    else if (fixtureArg === 'all') inputs = [GENUINE_FIXTURE, SUSPICIOUS_FIXTURE, AMBIGUOUS_FIXTURE, vibrantFixture];
     else {
         const get = (flag: string) => args.find(a => a.startsWith(`--${flag}=`))?.split('=')[1] ??
             (args.includes(`--${flag}`) ? args[args.indexOf(`--${flag}`) + 1] : undefined);

@@ -150,8 +150,17 @@ export class RegistryTools {
 
         // Attach to identity claims
         const updated = currentClaims.map(c => {
-            if (c.dimension === 'identity' && (c.label === 'Business Name' || c.label === 'Registration Number')) {
-                const newStatus = found && nameMatch ? 'verified' : found ? 'contradicted' : 'pending';
+            if (c.dimension === 'identity') {
+                let newStatus: 'verified' | 'contradicted' | 'pending' = 'pending';
+                if (!found) {
+                    newStatus = 'pending'; // or 'contradicted' if we expect all to be in registry
+                } else if (c.label === 'GST Number') {
+                    // Match extracted GST with registry GST
+                    newStatus = (record?.gstNumber && args.gstNumber && record.gstNumber === args.gstNumber) ? 'verified' : 'contradicted';
+                } else {
+                    // For Business Name, Registration Number, Director Name, Trade License, PAN, Udyam Number
+                    newStatus = (nameMatch && isActive) ? 'verified' : 'contradicted';
+                }
                 return { ...c, status: newStatus as typeof c.status, evidence: [...c.evidence, registryEvidence] };
             }
             return c;
