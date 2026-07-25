@@ -427,10 +427,20 @@ async function main() {
     try {
         const fs = await import('fs');
         const path = await import('path');
-        const __dirname = path.dirname(new URL(import.meta.url).pathname).replace(/^\/([A-Z]:)/, '$1');
-        const outPath = path.resolve(__dirname, '../../geotrust-dashboard/lib/live-cases.json');
-        fs.writeFileSync(outPath, JSON.stringify(results, null, 2));
-        console.log(`\n💾 Saved live cases to ${outPath}`);
+        const liveCases = results;
+        fs.writeFileSync(
+            path.join(process.cwd(), '../geotrust-dashboard/lib/live-cases.json'),
+            JSON.stringify(liveCases, null, 2)
+        );
+        console.log(`\n\n💾 Saved live cases to ${path.join(process.cwd(), '../geotrust-dashboard/lib/live-cases.json')}`);
+
+        // Sync to Prisma database for the dashboard
+        try {
+            const { execSync } = require('child_process');
+            execSync('npx tsx scripts/sync-db.ts', { cwd: path.join(process.cwd(), '../geotrust-dashboard'), stdio: 'inherit' });
+        } catch (e) {
+            console.error('Failed to sync cases to Prisma database:', e);
+        }
     } catch (e) {
         console.error('Failed to write live cases:', e);
     }
