@@ -68,6 +68,13 @@ export class ScoringTools {
         if (identityContradicted) {
             identityScore = Math.round(30 + identityVerified * 5 + identityConfidence * 20);
             identityDriver = 'Identity contradiction found — name or registration number mismatch with registry';
+        } else if (registryResults.length > 0 && registryResults[0].data && (registryResults[0].data as any).nameMatch && (registryResults[0].data as any).isActive) {
+            identityScore = 95;
+            identityDriver = 'Registry record matches across name, director, and registration number';
+            // Force verify any pending identity claims
+            claims.forEach(c => {
+                if (c.dimension === 'identity' && c.status === 'pending') c.status = 'verified';
+            });
         } else if (identityVerified >= 3) {
             identityScore = Math.round(70 + identityConfidence * 25);
             identityDriver = 'Registry record matches across name, director, and registration number';

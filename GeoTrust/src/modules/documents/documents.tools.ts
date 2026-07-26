@@ -30,6 +30,19 @@ const MOCK_DOCUMENTS: Record<string, {
         ownershipType: 'owned',
         photoLocation: { lat: 12.9715, lng: 77.5945 }, // Close to MG Road
     },
+    'doc_vibrant_reg_2023.pdf': {
+        name: 'Vibrant Logistics Pvt Ltd',
+        registrationNumber: 'U63090MH2019PTC567890',
+        address: 'Andheri East, Mumbai, Maharashtra',
+        incorporationDate: '2019-08-12',
+        directorName: 'Ramesh Patel',
+        documentQuality: 0.95,
+        pan: 'ABCDE5678F',
+        gstNumber: '27AADCV1234E1Z2',
+        tradeLicenseNumber: 'TL/MUM/2019/1234',
+        ownershipType: 'rented',
+        photoLocation: { lat: 19.1136, lng: 72.8697 }, // Andheri East
+    },
     'STEEL-REG-CERT': {
         name: 'Coimbatore Steels & Alloys Pvt Ltd',
         registrationNumber: 'U27100TN2015PTC098765',

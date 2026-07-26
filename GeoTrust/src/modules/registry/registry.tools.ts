@@ -53,8 +53,11 @@ export class RegistryTools {
                 flags.push(`Business status: "${record.status}" — not in good standing`);
             }
 
-            return {
+            const result: ToolResult = {
                 status: 'success',
+                ok: true,
+                source: 'Business Registry',
+                confidence: 0.9,
                 data: {
                     found: true,
                     similarityScore: similarity,
@@ -68,6 +71,22 @@ export class RegistryTools {
                     }
                 }
             };
+            
+            this.caseStore.addToolResult(args.caseId, result);
+            
+            // Verify identity claims if match is good
+            if (nameMatch && record.status === 'active') {
+                const currentClaims = state.claims;
+                const updated = currentClaims.map(c => {
+                    if (c.dimension === 'identity') {
+                        return { ...c, status: 'verified' as const };
+                    }
+                    return c;
+                });
+                this.caseStore.updateClaims(args.caseId, updated);
+            }
+            
+            return result;
         } catch (error) {
             return { status: 'failed', error: String(error) };
         }

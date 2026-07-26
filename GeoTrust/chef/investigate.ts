@@ -398,6 +398,7 @@ async function main() {
     if (fixtureArg === 'genuine') inputs = [GENUINE_FIXTURE];
     else if (fixtureArg === 'suspicious') inputs = [SUSPICIOUS_FIXTURE];
     else if (fixtureArg === 'ambiguous') inputs = [AMBIGUOUS_FIXTURE];
+    else if (fixtureArg === 'vibrant') inputs = [vibrantFixture];
     else if (fixtureArg === 'all') inputs = [GENUINE_FIXTURE, SUSPICIOUS_FIXTURE, AMBIGUOUS_FIXTURE, vibrantFixture];
     else {
         const get = (flag: string) => args.find(a => a.startsWith(`--${flag}=`))?.split('=')[1] ??
@@ -409,6 +410,11 @@ async function main() {
             claimedAddress: get('address') ?? '42, MG Road, Bengaluru, Karnataka 560001',
             incorporationYear: parseInt(get('year') ?? '2018'),
             documentRef: get('docRef') ?? 'REG-CERT',
+            entityType: 'Pvt Ltd',
+            isGstRegistered: true,
+            premises: 'rented',
+            businessAgeMonths: 60,
+            loanType: 'Secured'
         }];
     }
 
@@ -429,7 +435,7 @@ async function main() {
         const fs = await import('fs');
         const path = await import('path');
         const liveCases = results;
-        const targetPath = path.join(process.cwd(), '../geotrust-dashboard/lib/live-cases.json');
+        const targetPath = path.join(process.cwd(), 'src/widgets/lib/live-cases.json');
         if (fs.existsSync(path.dirname(targetPath))) {
             fs.writeFileSync(targetPath, JSON.stringify(liveCases, null, 2));
             console.log(`\n\n💾 Saved live cases to ${targetPath}`);
@@ -437,7 +443,7 @@ async function main() {
             // Sync to Prisma database for the dashboard
             try {
                 const cp = await import('child_process');
-                cp.execSync('npx tsx scripts/sync-db.ts', { cwd: path.join(process.cwd(), '../geotrust-dashboard'), stdio: 'inherit' });
+                cp.execSync('npx tsx scripts/sync-db.ts', { cwd: path.join(process.cwd(), 'src/widgets'), stdio: 'inherit' });
             } catch (e) {
                 console.error('Failed to sync cases to Prisma database:', e);
             }
@@ -448,17 +454,22 @@ async function main() {
         console.error('Failed to write live cases:', e);
     }
 
-    if (results.length === 3) {
+    if (results.length >= 3) {
         console.log('\n\n' + '═'.repeat(60));
-        console.log('📊 Three-Fixture Comparison:');
+        console.log('📊 Fixture Comparison:');
         console.log('═'.repeat(60));
         for (const r of results) {
             console.log(`  ${r.businessName.padEnd(40)} | Score: ${String(r.overallScore).padStart(3)} | ${r.recommendation}`);
         }
         console.log('═'.repeat(60));
-        const [genuine, suspicious, ambiguous] = results;
-        const ambiguousDifferentFromSuspicious = ambiguous.recommendation !== suspicious.recommendation;
-        console.log(`\n✅ Ambiguous ≠ Suspicious: ${ambiguousDifferentFromSuspicious ? 'PASS' : 'FAIL — scoring logic needs review'}`);
+        const genuine = results.find(r => r.id === 'case-001') || results[0];
+        const suspicious = results.find(r => r.id === 'case-002') || results[1];
+        const ambiguous = results.find(r => r.id === 'case-004') || results[2];
+        
+        if (genuine && suspicious && ambiguous) {
+            const ambiguousDifferentFromSuspicious = ambiguous.recommendation !== suspicious.recommendation;
+            console.log(`\n✅ Ambiguous ≠ Suspicious: ${ambiguousDifferentFromSuspicious ? 'PASS' : 'FAIL — scoring logic needs review'}`);
+        }
     }
 
     console.log('\n✅ Investigation complete.');

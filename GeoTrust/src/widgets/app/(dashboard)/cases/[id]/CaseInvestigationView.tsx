@@ -203,7 +203,7 @@ export function CaseInvestigationView({ caseData }: Props) {
                 <h3 className="font-display font-semibold text-[11px] text-text-muted uppercase tracking-wider mb-3">
                   Evidence Needed
                 </h3>
-                <MissingEvidenceChecklist items={caseData.missingEvidence.map((e) => e.message)} />
+                <MissingEvidenceChecklist items={caseData.missingEvidence as unknown as string[]} />
               </div>
             )}
 

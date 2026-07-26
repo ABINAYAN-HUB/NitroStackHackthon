@@ -87,6 +87,18 @@ const WEB_PRESENCE_DB: Record<string, {
         sslValid: true,
         lastCrawled: '2024-01-16T00:00:00Z',
     },
+    'vibrant logistics': {
+        domain: 'vibrantlogistics.in',
+        domainAgeYears: 4.2,
+        hasSocialMedia: true,
+        hasGoogleBusinessListing: true,
+        hasNewsOrPR: false,
+        reviewCount: 15,
+        averageRating: 4.1,
+        websiteActive: true,
+        sslValid: true,
+        lastCrawled: '2024-01-15T00:00:00Z',
+    },
 };
 
 const WebPresenceCheckerSchema = z.object({

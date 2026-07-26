@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { Navigation } from "@/components/shared/Navigation";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -35,13 +34,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}>
+      <head>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+      </head>
       <body className="font-body antialiased min-h-screen bg-ink text-text">
-        <div className="flex min-h-screen">
-          <Navigation />
-          <main className="flex-1 ml-[272px] min-h-screen bg-gradient-mesh">
-            {children}
-          </main>
-        </div>
+        {children}
       </body>
     </html>
   );
