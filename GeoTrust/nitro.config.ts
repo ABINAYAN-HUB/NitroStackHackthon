@@ -25,7 +25,7 @@ export default {
    * - 'http'   → for cloud deployment (HTTP + SSE, accepts remote MCP clients)
    * - 'dual'   → both transports simultaneously (recommended for production)
    */
-  transport: process.env.MCP_TRANSPORT_TYPE || 'dual',
+  transport: process.env.MCP_TRANSPORT_TYPE || (process.env.NODE_ENV === 'production' ? 'http' : 'dual'),
 
   /**
    * HTTP server settings (only used when transport includes 'http' or 'dual')
