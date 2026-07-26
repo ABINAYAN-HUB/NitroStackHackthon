@@ -41,9 +41,9 @@ const SYSTEM_PROMPT = `You are investigating a small business's loan application
 Your goal is to build an evidence-based picture of whether this business is genuine.
 
 Investigation approach:
-1. Start by reading documents (document_reader) to extract initial claims.
-2. Cross-check the registration number via registry_checker.
-3. Verify the address using address_checker — use both the claimed address and registry address.
+1. Start by reading documents (extractRegistrationCertificate, extractUtilityBill) to extract initial claims.
+2. Cross-check the registration number via validateRegistration.
+3. Verify the address using verifyAddress — use both the claimed address and registry address.
 4. Assess the digital footprint via web_presence_checker.
 5. Once all four tool categories have been run, call score_case to produce the final verdict.
 
@@ -181,8 +181,8 @@ async function investigateDeterministic(mcpClient: Client, input: InvestigationI
     });
 
     // Step 2: Registry checker
-    log('orchestrator', `Step 2/5 — Calling registry_checker — looking up ${input.registrationNumber}`);
-    const regResult = await callAndParse(mcpClient, 'registry_checker', {
+    log('orchestrator', `Step 2/5 — Calling validateRegistration — looking up ${input.registrationNumber}`);
+    const regResult = await callAndParse(mcpClient, 'validateRegistration', {
         caseId: input.caseId,
         businessName: input.businessName,
         registrationNumber: input.registrationNumber,
@@ -289,21 +289,21 @@ then call score_case to finalize the assessment.`
             const toolName = toolCall.function.name;
             const toolArgs = JSON.parse(toolCall.function.arguments);
 
-            if (toolName === 'document_reader') log('orchestrator', `Calling document_reader for ${toolArgs.documentType ?? 'registration certificate'}`);
-            else if (toolName === 'registry_checker') log('orchestrator', `Calling registry_checker — looking up ${toolArgs.registrationNumber}`);
-            else if (toolName === 'address_checker') log('evidence_challenger', `Calling address_checker — cross-referencing "${toolArgs.claimedAddress}"`);
+            if (toolName === 'extractRegistrationCertificate') log('orchestrator', `Calling extractRegistrationCertificate for ${toolArgs.documentType ?? 'registration certificate'}`);
+            else if (toolName === 'validateRegistration') log('orchestrator', `Calling validateRegistration — looking up ${toolArgs.registrationNumber}`);
+            else if (toolName === 'verifyAddress') log('evidence_challenger', `Calling verifyAddress — cross-referencing "${toolArgs.claimedAddress}"`);
             else if (toolName === 'web_presence_checker') log('orchestrator', `Calling web_presence_checker — assessing digital footprint`);
             else if (toolName === 'score_case') log('risk_arbiter', 'All evidence gathered — calling score_case');
 
             try {
                 const parsedResult = await callAndParse(mcpClient, toolName, toolArgs);
 
-                if (toolName === 'registry_checker' && typeof parsedResult === 'object' && parsedResult !== null) {
+                if (toolName === 'validateRegistration' && typeof parsedResult === 'object' && parsedResult !== null) {
                     const data = (parsedResult as { data?: { flags?: string[]; nameMatch?: boolean; isActive?: boolean } }).data;
                     if (data?.flags?.length) log('evidence_challenger', `Registry flags: ${data.flags.join('; ')}`);
                     else if (data?.nameMatch && data?.isActive) log('evidence_challenger', 'Registry match confirmed');
                 }
-                if (toolName === 'address_checker' && typeof parsedResult === 'object' && parsedResult !== null) {
+                if (toolName === 'verifyAddress' && typeof parsedResult === 'object' && parsedResult !== null) {
                     const data = (parsedResult as { data?: { flags?: string[]; registryAddressMatch?: boolean } }).data;
                     if (data?.flags?.length) log('evidence_challenger', `Address issues: ${data.flags[0]}`);
                     if (data?.registryAddressMatch === false) log('evidence_challenger', 'Address contradiction detected');
@@ -351,7 +351,7 @@ async function investigate(input: InvestigationInput): Promise<Case> {
     const transport = new StdioClientTransport({
         command: 'node',
         args: ['dist/index.js'],
-        env: { ...process.env },
+        env: { ...process.env, NITROSTACK_APP_MODE: 'STDIO', PORT: '0', MCP_TRANSPORT_TYPE: 'stdio' },
     });
 
     const mcpClient = new Client({ name: 'geotrust-chef', version: '1.0.0' }, { capabilities: {} });
@@ -429,18 +429,20 @@ async function main() {
         const fs = await import('fs');
         const path = await import('path');
         const liveCases = results;
-        fs.writeFileSync(
-            path.join(process.cwd(), '../geotrust-dashboard/lib/live-cases.json'),
-            JSON.stringify(liveCases, null, 2)
-        );
-        console.log(`\n\n💾 Saved live cases to ${path.join(process.cwd(), '../geotrust-dashboard/lib/live-cases.json')}`);
+        const targetPath = path.join(process.cwd(), '../geotrust-dashboard/lib/live-cases.json');
+        if (fs.existsSync(path.dirname(targetPath))) {
+            fs.writeFileSync(targetPath, JSON.stringify(liveCases, null, 2));
+            console.log(`\n\n💾 Saved live cases to ${targetPath}`);
 
-        // Sync to Prisma database for the dashboard
-        try {
-            const cp = await import('child_process');
-            cp.execSync('npx tsx scripts/sync-db.ts', { cwd: path.join(process.cwd(), '../geotrust-dashboard'), stdio: 'inherit' });
-        } catch (e) {
-            console.error('Failed to sync cases to Prisma database:', e);
+            // Sync to Prisma database for the dashboard
+            try {
+                const cp = await import('child_process');
+                cp.execSync('npx tsx scripts/sync-db.ts', { cwd: path.join(process.cwd(), '../geotrust-dashboard'), stdio: 'inherit' });
+            } catch (e) {
+                console.error('Failed to sync cases to Prisma database:', e);
+            }
+        } else {
+            console.log(`\n\n⚠️ Dashboard directory not found, skipping sync to ${targetPath}`);
         }
     } catch (e) {
         console.error('Failed to write live cases:', e);

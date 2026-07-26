@@ -1,39 +1,11 @@
-import { prisma } from "@/lib/prisma";
-import { runInvestigationForCase } from "@/lib/investigation-engine";
+"use client";
+
+import { MOCK_CASES } from "@/lib/mock-data";
 import { CaseQueueClient } from "./CaseQueueClient";
 import { Shield, TrendingUp, AlertTriangle, CheckCircle2, Clock } from "lucide-react";
 
-export default async function CaseQueuePage() {
-  let cases = await prisma.case.findMany({
-    orderBy: { submittedAt: 'desc' },
-    include: {
-      claims: {
-        include: { evidence: true }
-      },
-      dimensionScores: true,
-      missingEvidence: true,
-      trace: true
-    }
-  });
-
-  // Auto-investigate any case stuck in 'investigating' status or missing scores
-  const pendingCases = cases.filter(c => c.status === "investigating" || c.overallScore === null);
-  if (pendingCases.length > 0) {
-    for (const p of pendingCases) {
-      await runInvestigationForCase(p.id);
-    }
-    cases = await prisma.case.findMany({
-      orderBy: { submittedAt: 'desc' },
-      include: {
-        claims: {
-          include: { evidence: true }
-        },
-        dimensionScores: true,
-        missingEvidence: true,
-        trace: true
-      }
-    });
-  }
+export default function CaseQueuePage() {
+  const cases = MOCK_CASES;
 
   const cleared = cases.filter(c => c.status === "cleared").length;
   const escalated = cases.filter(c => c.status === "needs_review" || c.status === "escalated").length;

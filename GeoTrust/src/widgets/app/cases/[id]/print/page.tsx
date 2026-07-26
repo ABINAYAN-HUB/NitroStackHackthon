@@ -1,20 +1,17 @@
-import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { formatDate, dimensionLabel, scoreColor, recommendationConfig } from "@/lib/utils";
 import { AutoPrint } from "./AutoPrint";
+import { getCaseById, MOCK_CASES } from "@/lib/mock-data";
 
 interface Props { params: Promise<{ id: string }>; }
 
+export async function generateStaticParams() {
+  return MOCK_CASES.map((c) => ({ id: c.id }));
+}
+
 export default async function PrintPage({ params }: Props) {
   const { id } = await params;
-  const c = await prisma.case.findUnique({
-    where: { id },
-    include: {
-      claims: { include: { evidence: true } },
-      dimensionScores: true,
-      missingEvidence: true
-    }
-  });
+  const c = getCaseById(id);
   if (!c) notFound();
   const rec = recommendationConfig((c.recommendation || "needs_review") as any);
 
@@ -39,7 +36,7 @@ export default async function PrintPage({ params }: Props) {
       {/* Business */}
       <div className="mb-6">
         <h2 className="font-display font-bold text-xl mb-1">{c.businessName}</h2>
-        <p className="text-gray-500 text-sm font-mono">Submitted: {formatDate(c.submittedAt.toISOString())}</p>
+        <p className="text-gray-500 text-sm font-mono">Submitted: {formatDate(c.submittedAt)}</p>
       </div>
 
       {/* Recommendation stamp */}
@@ -104,8 +101,8 @@ export default async function PrintPage({ params }: Props) {
             Missing Evidence
           </h3>
           <ul className="list-disc list-inside space-y-1">
-            {c.missingEvidence.map((item, i) => (
-              <li key={item.id ?? i} className="text-sm text-gray-700">{item.message}</li>
+            {c.missingEvidence.map((item: any, i: number) => (
+              <li key={item.id ?? i} className="text-sm text-gray-700">{typeof item === 'string' ? item : item.message}</li>
             ))}
           </ul>
         </div>
