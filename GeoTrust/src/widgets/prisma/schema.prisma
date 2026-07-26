@@ -1,0 +1,69 @@
+datasource db {
+  provider = "sqlite"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Case {
+  id                   String       @id @default(uuid())
+  businessName         String
+  submittedAt          DateTime     @default(now())
+  status               String
+  overallScore         Int?
+  recommendation       String?
+  recommendationReason String?
+  
+  claims               Claim[]
+  dimensionScores      DimensionScore[]
+  trace                TraceEvent[]
+  missingEvidence      MissingEvidence[]
+}
+
+model DimensionScore {
+  id        String @id @default(uuid())
+  dimension String
+  score     Int
+  driver    String
+  caseId    String
+  case      Case   @relation(fields: [caseId], references: [id], onDelete: Cascade)
+}
+
+model Claim {
+  id        String     @id @default(uuid())
+  dimension String
+  label     String
+  value     String
+  status    String
+  caseId    String
+  case      Case       @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  evidence  Evidence[]
+}
+
+model Evidence {
+  id          String   @id @default(uuid())
+  source      String
+  snippet     String
+  retrievedAt DateTime @default(now())
+  reliability Float
+  relation    String
+  claimId     String
+  claim       Claim    @relation(fields: [claimId], references: [id], onDelete: Cascade)
+}
+
+model TraceEvent {
+  id        String   @id @default(uuid())
+  timestamp DateTime @default(now())
+  agent     String
+  message   String
+  caseId    String
+  case      Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
+}
+
+model MissingEvidence {
+  id      String @id @default(uuid())
+  message String
+  caseId  String
+  case    Case   @relation(fields: [caseId], references: [id], onDelete: Cascade)
+}

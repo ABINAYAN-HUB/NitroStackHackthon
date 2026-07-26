@@ -2,252 +2,126 @@
     "version": "1.0.0",
     "widgets": [
         {
-            "uri": "/pizza-map",
-            "name": "Pizza Map",
-            "description": "Interactive map showing pizza shop locations",
+            "uri": "/widget",
+            "name": "GeoTrust Investigation Report",
+            "description": "Displays a full business authenticity investigation report — overall score, dimension breakdown, claim status, detected contradictions, missing evidence, and agent trace.",
             "examples": [
                 {
-                    "name": "All Shops",
-                    "description": "Display all pizza shops on the map",
+                    "name": "Genuine Business",
+                    "description": "A highly authentic SME with strong registry, address, and digital presence signals",
                     "data": {
-                        "shops": [
-                            {
-                                "id": "tonys-pizza",
-                                "name": "Tony's New York Pizza",
-                                "description": "Authentic New York-style pizza with a crispy thin crust",
-                                "address": "1570 Stockton St, San Francisco, CA 94133",
-                                "coords": [
-                                    -122.4106,
-                                    37.8006
-                                ],
-                                "rating": 4.5,
-                                "reviews": 1250,
-                                "priceLevel": 2,
-                                "cuisine": [
-                                    "Italian",
-                                    "Pizza",
-                                    "New York Style"
-                                ],
-                                "hours": {
-                                    "open": "11:00 AM",
-                                    "close": "10:00 PM"
-                                },
-                                "phone": "(415) 835-9888",
-                                "website": "https://tonyspizzasf.com",
-                                "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591",
-                                "specialties": [
-                                    "Margherita",
-                                    "Pepperoni",
-                                    "White Pizza"
-                                ],
-                                "openNow": true
-                            },
-                            {
-                                "id": "bella-napoli",
-                                "name": "Bella Napoli",
-                                "description": "Traditional Neapolitan pizza baked in a wood-fired oven",
-                                "address": "3854 Geary Blvd, San Francisco, CA 94118",
-                                "coords": [
-                                    -122.4603,
-                                    37.7808
-                                ],
-                                "rating": 4.7,
-                                "reviews": 890,
-                                "priceLevel": 3,
-                                "cuisine": [
-                                    "Italian",
-                                    "Pizza",
-                                    "Neapolitan"
-                                ],
-                                "hours": {
-                                    "open": "12:00 PM",
-                                    "close": "9:00 PM"
-                                },
-                                "phone": "(415) 221-0305",
-                                "image": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002",
-                                "specialties": [
-                                    "Marinara",
-                                    "Quattro Formaggi",
-                                    "Prosciutto e Funghi"
-                                ],
-                                "openNow": true
-                            }
+                        "id": "case-genuine-001",
+                        "businessName": "Coimbatore Precision Parts Pvt Ltd",
+                        "submittedAt": "2025-07-01T09:30:00.000Z",
+                        "status": "cleared",
+                        "overallScore": 88,
+                        "recommendation": "proceed",
+                        "recommendationReason": "All four investigation dimensions returned strong positive signals. Registry is active, address is verified in a commercial zone, web presence is established, and documents show no tampering indicators.",
+                        "dimensionScores": [
+                            { "dimension": "identity", "score": 92, "driver": "GST registration active and matches MCA records. Director DIN verified." },
+                            { "dimension": "location", "score": 85, "driver": "Address confirmed as commercial zone in Coimbatore industrial estate." },
+                            { "dimension": "digital_presence", "score": 88, "driver": "Domain 6 years old, 47 Google reviews, active LinkedIn page." },
+                            { "dimension": "document_integrity", "score": 86, "driver": "No metadata anomalies detected. QR signature valid." }
                         ],
-                        "filter": "all",
-                        "totalShops": 2
-                    }
-                }
-            ],
-            "tags": [
-                "map",
-                "location",
-                "interactive"
-            ]
-        },
-        {
-            "uri": "/pizza-list",
-            "name": "Pizza List",
-            "description": "List view of pizza shops with filtering and sorting",
-            "examples": [
-                {
-                    "name": "All Shops List",
-                    "description": "Display all shops in a list",
-                    "data": {
-                        "shops": [
-                            {
-                                "id": "tonys-pizza",
-                                "name": "Tony's New York Pizza",
-                                "description": "Authentic New York-style pizza with a crispy thin crust",
-                                "address": "1570 Stockton St, San Francisco, CA 94133",
-                                "coords": [
-                                    -122.4106,
-                                    37.8006
-                                ],
-                                "rating": 4.5,
-                                "reviews": 1250,
-                                "priceLevel": 2,
-                                "cuisine": [
-                                    "Italian",
-                                    "Pizza",
-                                    "New York Style"
-                                ],
-                                "hours": {
-                                    "open": "11:00 AM",
-                                    "close": "10:00 PM"
-                                },
-                                "phone": "(415) 835-9888",
-                                "website": "https://tonyspizzasf.com",
-                                "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591",
-                                "specialties": [
-                                    "Margherita",
-                                    "Pepperoni",
-                                    "White Pizza"
-                                ],
-                                "openNow": true
-                            },
-                            {
-                                "id": "bella-napoli",
-                                "name": "Bella Napoli",
-                                "description": "Traditional Neapolitan pizza baked in a wood-fired oven",
-                                "address": "3854 Geary Blvd, San Francisco, CA 94118",
-                                "coords": [
-                                    -122.4603,
-                                    37.7808
-                                ],
-                                "rating": 4.7,
-                                "reviews": 890,
-                                "priceLevel": 3,
-                                "cuisine": [
-                                    "Italian",
-                                    "Pizza",
-                                    "Neapolitan"
-                                ],
-                                "hours": {
-                                    "open": "12:00 PM",
-                                    "close": "9:00 PM"
-                                },
-                                "phone": "(415) 221-0305",
-                                "image": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002",
-                                "specialties": [
-                                    "Marinara",
-                                    "Quattro Formaggi",
-                                    "Prosciutto e Funghi"
-                                ],
-                                "openNow": true
-                            }
+                        "claims": [
+                            { "id": "c1", "dimension": "identity", "label": "Registration Number", "value": "27AABCC1234F1Z5", "status": "verified", "evidence": [] },
+                            { "id": "c2", "dimension": "location", "label": "Registered Address", "value": "Plot 47, SIPCOT Industrial Park, Coimbatore, Tamil Nadu 641021", "status": "verified", "evidence": [] },
+                            { "id": "c3", "dimension": "digital_presence", "label": "Business Website", "value": "www.cppl-cbe.in", "status": "verified", "evidence": [] }
                         ],
-                        "filters": {},
-                        "totalShops": 2
+                        "missingEvidence": [],
+                        "trace": [
+                            { "timestamp": "2025-07-01T09:30:05.000Z", "agent": "orchestrator", "message": "Starting investigation for Coimbatore Precision Parts Pvt Ltd" },
+                            { "timestamp": "2025-07-01T09:30:06.000Z", "agent": "registry_checker", "message": "Registry lookup complete: Active status confirmed" },
+                            { "timestamp": "2025-07-01T09:30:07.000Z", "agent": "address_checker", "message": "Address verified: SIPCOT industrial zone — commercial" },
+                            { "timestamp": "2025-07-01T09:30:08.000Z", "agent": "web_presence_checker", "message": "Digital footprint strong: domain age 6yr, 47 reviews" },
+                            { "timestamp": "2025-07-01T09:30:09.000Z", "agent": "risk_arbiter", "message": "All dimensions passed. Recommendation: proceed" }
+                        ]
                     }
-                }
-            ],
-            "tags": [
-                "list",
-                "filter",
-                "sort"
-            ]
-        },
-        {
-            "uri": "/pizza-shop",
-            "name": "Pizza Shop Details",
-            "description": "Detailed information about a specific pizza shop",
-            "examples": [
+                },
                 {
-                    "name": "Shop Detail",
-                    "description": "Show details for a specific shop",
+                    "name": "Suspicious Business",
+                    "description": "A high-risk case with address mismatches, document anomalies, and possible fraud ring indicators",
                     "data": {
-                        "shop": {
-                            "id": "tonys-pizza",
-                            "name": "Tony's New York Pizza",
-                            "description": "Authentic New York-style pizza with a crispy thin crust",
-                            "address": "1570 Stockton St, San Francisco, CA 94133",
-                            "coords": [
-                                -122.4106,
-                                37.8006
-                            ],
-                            "rating": 4.5,
-                            "reviews": 1250,
-                            "priceLevel": 2,
-                            "cuisine": [
-                                "Italian",
-                                "Pizza",
-                                "New York Style"
-                            ],
-                            "hours": {
-                                "open": "11:00 AM",
-                                "close": "10:00 PM"
-                            },
-                            "phone": "(415) 835-9888",
-                            "website": "https://tonyspizzasf.com",
-                            "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591",
-                            "specialties": [
-                                "Margherita",
-                                "Pepperoni",
-                                "White Pizza"
-                            ],
-                            "openNow": true
-                        },
-                        "relatedShops": [
-                            {
-                                "id": "bella-napoli",
-                                "name": "Bella Napoli",
-                                "description": "Traditional Neapolitan pizza baked in a wood-fired oven",
-                                "address": "3854 Geary Blvd, San Francisco, CA 94118",
-                                "coords": [
-                                    -122.4603,
-                                    37.7808
-                                ],
-                                "rating": 4.7,
-                                "reviews": 890,
-                                "priceLevel": 3,
-                                "cuisine": [
-                                    "Italian",
-                                    "Pizza",
-                                    "Neapolitan"
-                                ],
-                                "hours": {
-                                    "open": "12:00 PM",
-                                    "close": "9:00 PM"
-                                },
-                                "phone": "(415) 221-0305",
-                                "image": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002",
-                                "specialties": [
-                                    "Marinara",
-                                    "Quattro Formaggi",
-                                    "Prosciutto e Funghi"
-                                ],
-                                "openNow": true
-                            }
+                        "id": "case-suspicious-001",
+                        "businessName": "Coastal Marine Exports Pvt Ltd",
+                        "submittedAt": "2025-07-02T14:15:00.000Z",
+                        "status": "escalated",
+                        "overallScore": 23,
+                        "recommendation": "escalate",
+                        "recommendationReason": "Multiple critical contradictions detected. Registered address is a residential property inconsistent with claimed marine export operations. Document metadata shows signs of digital fabrication. Shared identifiers with 3 other flagged entities.",
+                        "dimensionScores": [
+                            { "dimension": "identity", "score": 31, "driver": "GST registration recently activated. Director DIN linked to 4 other entities under investigation." },
+                            { "dimension": "location", "score": 18, "driver": "Claimed address is a residential flat — incompatible with marine cargo operations." },
+                            { "dimension": "digital_presence", "score": 12, "driver": "Domain registered 3 days before loan application. No reviews or business presence found." },
+                            { "dimension": "document_integrity", "score": 29, "driver": "PDF metadata creation date is 6 months after document issue date — strong tampering indicator." }
+                        ],
+                        "claims": [
+                            { "id": "c1", "dimension": "identity", "label": "Registration Number", "value": "33AABCE9876B1ZK", "status": "verified", "evidence": [] },
+                            { "id": "c2", "dimension": "location", "label": "Registered Address", "value": "Flat 3B, Seaview Residency, Visakhapatnam, AP 530003", "status": "contradicted", "evidence": [] },
+                            { "id": "c3", "dimension": "digital_presence", "label": "Business Website", "value": "www.coastalmarine-exp.com", "status": "contradicted", "evidence": [] },
+                            { "id": "c4", "dimension": "document_integrity", "label": "Document Metadata", "value": "Creation date mismatch: Jan 2024 vs Jul 2023 issue date", "status": "contradicted", "evidence": [] }
+                        ],
+                        "missingEvidence": [
+                            { "id": "me1", "message": "Physical inspection report for registered address" },
+                            { "id": "me2", "message": "Export license from DGFT for marine goods" },
+                            { "id": "me3", "message": "Bank statements for last 12 months" },
+                            { "id": "me4", "message": "Director KYC with independent verification" }
+                        ],
+                        "trace": [
+                            { "timestamp": "2025-07-02T14:15:05.000Z", "agent": "orchestrator", "message": "Starting investigation for Coastal Marine Exports Pvt Ltd" },
+                            { "timestamp": "2025-07-02T14:15:06.000Z", "agent": "address_checker", "message": "CRITICAL: Address is residential flat — incompatible with stated business type" },
+                            { "timestamp": "2025-07-02T14:15:07.000Z", "agent": "document_reader", "message": "Metadata anomaly: PDF created Jan 2024, document date Jul 2023" },
+                            { "timestamp": "2025-07-02T14:15:08.000Z", "agent": "web_presence_checker", "message": "Domain registered 3 days before application — high fraud signal" },
+                            { "timestamp": "2025-07-02T14:15:09.000Z", "agent": "evidence_challenger", "message": "Shared DIN found in 3 other flagged cases — possible fraud ring" },
+                            { "timestamp": "2025-07-02T14:15:10.000Z", "agent": "risk_arbiter", "message": "Score 23/100. Escalating to fraud investigation team." }
+                        ]
+                    }
+                },
+                {
+                    "name": "Ambiguous Business",
+                    "description": "A borderline case needing additional evidence before a decision can be made",
+                    "data": {
+                        "id": "case-ambiguous-001",
+                        "businessName": "Mysuru Agro Solutions LLP",
+                        "submittedAt": "2025-07-03T11:00:00.000Z",
+                        "status": "needs_review",
+                        "overallScore": 54,
+                        "recommendation": "request_evidence",
+                        "recommendationReason": "Identity and location dimensions are positive, but digital presence is minimal and document signatures could not be fully validated. Additional evidence required before proceeding.",
+                        "dimensionScores": [
+                            { "dimension": "identity", "score": 72, "driver": "GST active. Director information matches MCA records." },
+                            { "dimension": "location", "score": 68, "driver": "Address verified as agricultural zone — consistent with business type." },
+                            { "dimension": "digital_presence", "score": 31, "driver": "No website found. Single Facebook page with low activity. Insufficient digital footprint." },
+                            { "dimension": "document_integrity", "score": 45, "driver": "Document signatures present but third-party validation unavailable for rural district." }
+                        ],
+                        "claims": [
+                            { "id": "c1", "dimension": "identity", "label": "Registration Number", "value": "29AABCM5543C1ZL", "status": "verified", "evidence": [] },
+                            { "id": "c2", "dimension": "location", "label": "Registered Address", "value": "Survey No 44, Hunsur Road, Mysuru, Karnataka 570011", "status": "verified", "evidence": [] },
+                            { "id": "c3", "dimension": "digital_presence", "label": "Business Website", "value": "Not found", "status": "pending", "evidence": [] }
+                        ],
+                        "missingEvidence": [
+                            { "id": "me1", "message": "Recent 6-month bank statement showing agro transactions" },
+                            { "id": "me2", "message": "Utility bill for the registered farm address" }
+                        ],
+                        "trace": [
+                            { "timestamp": "2025-07-03T11:00:05.000Z", "agent": "orchestrator", "message": "Starting investigation for Mysuru Agro Solutions LLP" },
+                            { "timestamp": "2025-07-03T11:00:06.000Z", "agent": "registry_checker", "message": "Registry active. GST and MCA records match." },
+                            { "timestamp": "2025-07-03T11:00:07.000Z", "agent": "address_checker", "message": "Agricultural zone confirmed — consistent with business type" },
+                            { "timestamp": "2025-07-03T11:00:08.000Z", "agent": "web_presence_checker", "message": "No website. Limited social media. Low digital footprint for rural SME." },
+                            { "timestamp": "2025-07-03T11:00:09.000Z", "agent": "risk_arbiter", "message": "Inconclusive. Requesting additional evidence before proceeding." }
                         ]
                     }
                 }
             ],
             "tags": [
-                "detail",
-                "info",
-                "contact"
+                "fraud-detection",
+                "kyb",
+                "loan-verification",
+                "business-authenticity",
+                "investigation",
+                "sme"
             ]
         }
     ],
-    "generatedAt": "2025-12-03T00:00:00.000Z"
+    "generatedAt": "2025-07-26T02:36:00.000Z"
 }

@@ -19,5 +19,5 @@
     "types": ["node"]
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "src/widgets"]
+  "exclude": ["node_modules", "dist", "src/widgets", "src/widgets_backup"]
 }

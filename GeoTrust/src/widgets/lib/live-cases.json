@@ -1,0 +1,1511 @@
+[
+  {
+    "id": "case-001",
+    "businessName": "Priya Textiles Pvt Ltd",
+    "submittedAt": "2026-07-25T19:53:01.466Z",
+    "status": "cleared",
+    "overallScore": 90,
+    "dimensionScores": [
+      {
+        "dimension": "identity",
+        "score": 90,
+        "driver": "Registry record matches across name, director, and registration number"
+      },
+      {
+        "dimension": "location",
+        "score": 94,
+        "driver": "Address verified in CBD — Bengaluru"
+      },
+      {
+        "dimension": "digital_presence",
+        "score": 72,
+        "driver": "Active website, Google listing, 47 reviews in 5.8-year-old domain"
+      },
+      {
+        "dimension": "document_integrity",
+        "score": 97,
+        "driver": "Registration certificate quality 97% — all fields legible and consistent"
+      }
+    ],
+    "claims": [
+      {
+        "id": "case-001-doc-name",
+        "dimension": "identity",
+        "label": "Business Name",
+        "value": "Priya Textiles Pvt Ltd",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-doc-name-1785009181466",
+            "source": "Document OCR — Registration Certificate",
+            "snippet": "Name extracted from registration certificate: \"Priya Textiles Pvt Ltd\"",
+            "retrievedAt": "2026-07-25T19:53:01.466Z",
+            "reliability": 0.97,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-reg-1785009181482",
+            "source": "Indian SME Business Registry (Practice Dataset)",
+            "snippet": "Registry record found: Priya Textiles Pvt Ltd — Status: active. Flags: Annual filing overdue — last filed 2023-10-31 (33 months ago)",
+            "retrievedAt": "2026-07-25T19:53:01.482Z",
+            "reliability": 0.8,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-001-doc-regnum",
+        "dimension": "identity",
+        "label": "Registration Number",
+        "value": "U17111KA2018PTC112345",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-doc-regnum-1785009181466",
+            "source": "Document OCR — Registration Certificate",
+            "snippet": "Registration number: U17111KA2018PTC112345",
+            "retrievedAt": "2026-07-25T19:53:01.466Z",
+            "reliability": 0.97,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-reg-1785009181482",
+            "source": "Indian SME Business Registry (Practice Dataset)",
+            "snippet": "Registry record found: Priya Textiles Pvt Ltd — Status: active. Flags: Annual filing overdue — last filed 2023-10-31 (33 months ago)",
+            "retrievedAt": "2026-07-25T19:53:01.482Z",
+            "reliability": 0.8,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-001-doc-address",
+        "dimension": "location",
+        "label": "Registered Address",
+        "value": "42, MG Road, Bengaluru, Karnataka 560001",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-doc-addr-1785009181466",
+            "source": "Document OCR — Registration Certificate",
+            "snippet": "Address on certificate: \"42, MG Road, Bengaluru, Karnataka 560001\"",
+            "retrievedAt": "2026-07-25T19:53:01.466Z",
+            "reliability": 0.97,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-addr-1785009181483",
+            "source": "Address Verification Service (Mock GIS Data)",
+            "snippet": "Address verified in CBD — Bengaluru. No issues.",
+            "retrievedAt": "2026-07-25T19:53:01.483Z",
+            "reliability": 0.95,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-001-doc-director",
+        "dimension": "identity",
+        "label": "Director Name",
+        "value": "Priya Venkataraman",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-doc-dir-1785009181466",
+            "source": "Document OCR — Registration Certificate",
+            "snippet": "Director: Priya Venkataraman",
+            "retrievedAt": "2026-07-25T19:53:01.466Z",
+            "reliability": 0.97,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-reg-1785009181482",
+            "source": "Indian SME Business Registry (Practice Dataset)",
+            "snippet": "Registry record found: Priya Textiles Pvt Ltd — Status: active. Flags: Annual filing overdue — last filed 2023-10-31 (33 months ago)",
+            "retrievedAt": "2026-07-25T19:53:01.482Z",
+            "reliability": 0.8,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-001-pan",
+        "dimension": "identity",
+        "label": "PAN",
+        "value": "ABCDE1234F",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-pan-1785009181469",
+            "source": "PAN Extractor",
+            "snippet": "Extracted PAN: ABCDE1234F (Format valid: true)",
+            "retrievedAt": "2026-07-25T19:53:01.469Z",
+            "reliability": 0.97,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-reg-1785009181482",
+            "source": "Indian SME Business Registry (Practice Dataset)",
+            "snippet": "Registry record found: Priya Textiles Pvt Ltd — Status: active. Flags: Annual filing overdue — last filed 2023-10-31 (33 months ago)",
+            "retrievedAt": "2026-07-25T19:53:01.482Z",
+            "reliability": 0.8,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-001-gst",
+        "dimension": "identity",
+        "label": "GST Number",
+        "value": "29AAAPP1234F1Z5",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-gst-1785009181471",
+            "source": "GST Extractor",
+            "snippet": "Extracted GST Number: 29AAAPP1234F1Z5",
+            "retrievedAt": "2026-07-25T19:53:01.471Z",
+            "reliability": 0.97,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-reg-1785009181482",
+            "source": "Indian SME Business Registry (Practice Dataset)",
+            "snippet": "Registry record found: Priya Textiles Pvt Ltd — Status: active. Flags: Annual filing overdue — last filed 2023-10-31 (33 months ago)",
+            "retrievedAt": "2026-07-25T19:53:01.482Z",
+            "reliability": 0.8,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-001-trade",
+        "dimension": "identity",
+        "label": "Trade License",
+        "value": "TL/BLR/2018/4521",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-trade-1785009181472",
+            "source": "Trade License Extractor",
+            "snippet": "Extracted Trade License: TL/BLR/2018/4521",
+            "retrievedAt": "2026-07-25T19:53:01.472Z",
+            "reliability": 0.97,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-reg-1785009181482",
+            "source": "Indian SME Business Registry (Practice Dataset)",
+            "snippet": "Registry record found: Priya Textiles Pvt Ltd — Status: active. Flags: Annual filing overdue — last filed 2023-10-31 (33 months ago)",
+            "retrievedAt": "2026-07-25T19:53:01.482Z",
+            "reliability": 0.8,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-001-ownership",
+        "dimension": "location",
+        "label": "Premises Ownership",
+        "value": "owned",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-ownership-1785009181474",
+            "source": "Ownership Extractor",
+            "snippet": "Premises identified as: owned",
+            "retrievedAt": "2026-07-25T19:53:01.474Z",
+            "reliability": 0.97,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-addr-1785009181483",
+            "source": "Address Verification Service (Mock GIS Data)",
+            "snippet": "Address verified in CBD — Bengaluru. No issues.",
+            "retrievedAt": "2026-07-25T19:53:01.483Z",
+            "reliability": 0.95,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-001-util-address",
+        "dimension": "location",
+        "label": "Utility Bill Address",
+        "value": "42, MG Road, Bengaluru, Karnataka 560001",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-util-addr-1785009181477",
+            "source": "Document OCR — Utility Bill",
+            "snippet": "Address on utility bill: \"42, MG Road, Bengaluru, Karnataka 560001\"",
+            "retrievedAt": "2026-07-25T19:53:01.477Z",
+            "reliability": 0.873,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-addr-1785009181483",
+            "source": "Address Verification Service (Mock GIS Data)",
+            "snippet": "Address verified in CBD — Bengaluru. No issues.",
+            "retrievedAt": "2026-07-25T19:53:01.483Z",
+            "reliability": 0.95,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-001-photo",
+        "dimension": "location",
+        "label": "Photo GPS Verification",
+        "value": "12.9715, 77.5945",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-photo-1785009181478",
+            "source": "Premises Photo Metadata",
+            "snippet": "Photo EXIF Location: [12.9715, 77.5945] - Matches claimed address coords: true",
+            "retrievedAt": "2026-07-25T19:53:01.478Z",
+            "reliability": 0.95,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-addr-1785009181483",
+            "source": "Address Verification Service (Mock GIS Data)",
+            "snippet": "Address verified in CBD — Bengaluru. No issues.",
+            "retrievedAt": "2026-07-25T19:53:01.483Z",
+            "reliability": 0.95,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-001-web-presence",
+        "dimension": "digital_presence",
+        "label": "Digital Footprint",
+        "value": "priyatextiles.in",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-web-1785009181485",
+            "source": "Web Presence Analysis (Mock OSINT)",
+            "snippet": "Domain: priyatextiles.in (5.8 yrs old). Google listing: Yes. Reviews: 47. ",
+            "retrievedAt": "2026-07-25T19:53:01.485Z",
+            "reliability": 0.8,
+            "relation": "supports"
+          }
+        ]
+      }
+    ],
+    "recommendation": "proceed",
+    "recommendationReason": "All four dimensions verified with strong evidence; no unresolved contradictions.",
+    "missingEvidence": [],
+    "trace": [
+      {
+        "timestamp": "2026-07-25T19:53:00.680Z",
+        "agent": "orchestrator",
+        "message": "Connected to GeoTrust Kitchen. Investigating Priya Textiles Pvt Ltd (U17111KA2018PTC112345)"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:00.688Z",
+        "agent": "orchestrator",
+        "message": "Kitchen has 11 tools: document_reader, extractPAN, extractUdyamCertificate, extractGSTCertificate, extractTradeLicense, extractOwnershipProof, checkPremisesPhoto, registry_checker, address_checker, web_presence_checker, score_case"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:00.688Z",
+        "agent": "orchestrator",
+        "message": "Attempting LLM-driven investigation via NVIDIA NIM (meta/llama-3.3-70b-instruct)..."
+      },
+      {
+        "timestamp": "2026-07-25T19:53:01.462Z",
+        "agent": "orchestrator",
+        "message": "NIM API unavailable (403). Switching to deterministic tool-calling sequence."
+      },
+      {
+        "timestamp": "2026-07-25T19:53:01.463Z",
+        "agent": "orchestrator",
+        "message": "Starting deterministic investigation for Priya Textiles Pvt Ltd"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:01.463Z",
+        "agent": "orchestrator",
+        "message": "Step 1/5 — Calling document_reader for registration certificate"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:01.468Z",
+        "agent": "evidence_challenger",
+        "message": "Extracted 4 claims from registration certificate (quality: 97%)"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:01.468Z",
+        "agent": "orchestrator",
+        "message": "Calling extractPAN for identity verification"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:01.469Z",
+        "agent": "orchestrator",
+        "message": "Calling extractGSTCertificate"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:01.471Z",
+        "agent": "orchestrator",
+        "message": "Calling extractTradeLicense"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:01.472Z",
+        "agent": "orchestrator",
+        "message": "Calling extractOwnershipProof for owned premises"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:01.475Z",
+        "agent": "orchestrator",
+        "message": "Calling document_reader for utility bill"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:01.477Z",
+        "agent": "evidence_challenger",
+        "message": "Extracted utility bill address: \"42, MG Road, Bengaluru, Karnataka 560001\""
+      },
+      {
+        "timestamp": "2026-07-25T19:53:01.477Z",
+        "agent": "orchestrator",
+        "message": "Calling checkPremisesPhoto"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:01.480Z",
+        "agent": "orchestrator",
+        "message": "Step 2/5 — Calling registry_checker — looking up U17111KA2018PTC112345"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:01.482Z",
+        "agent": "evidence_challenger",
+        "message": "Registry flags: Annual filing overdue — last filed 2023-10-31 (33 months ago)"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:01.482Z",
+        "agent": "orchestrator",
+        "message": "Step 3/5 — Calling address_checker — verifying \"42, MG Road, Bengaluru, Karnataka 560001\""
+      },
+      {
+        "timestamp": "2026-07-25T19:53:01.484Z",
+        "agent": "evidence_challenger",
+        "message": "Address verified — matches registry filing"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:01.484Z",
+        "agent": "orchestrator",
+        "message": "Step 4/5 — Calling web_presence_checker — assessing digital footprint"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:01.485Z",
+        "agent": "evidence_challenger",
+        "message": "Digital footprint assessment complete — no major red flags"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:01.485Z",
+        "agent": "risk_arbiter",
+        "message": "Step 5/5 — All evidence gathered — calling score_case to compute final verdict"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:01.488Z",
+        "agent": "risk_arbiter",
+        "message": "Verdict: PROCEED — score 90/100. All four dimensions verified with strong evidence; no unresolved contradictions."
+      }
+    ]
+  },
+  {
+    "id": "case-002",
+    "businessName": "Coimbatore Steels & Alloys Pvt Ltd",
+    "submittedAt": "2026-07-25T19:53:04.715Z",
+    "status": "escalated",
+    "overallScore": 82,
+    "dimensionScores": [
+      {
+        "dimension": "identity",
+        "score": 90,
+        "driver": "Registry record matches across name, director, and registration number"
+      },
+      {
+        "dimension": "location",
+        "score": 88,
+        "driver": "Address verified in SIDCO Industrial — Coimbatore"
+      },
+      {
+        "dimension": "digital_presence",
+        "score": 41,
+        "driver": "Zero verified digital footprint — no reviews, no Google listing"
+      },
+      {
+        "dimension": "document_integrity",
+        "score": 91,
+        "driver": "Registration certificate quality 91% — all fields legible and consistent"
+      }
+    ],
+    "claims": [
+      {
+        "id": "case-002-doc-name",
+        "dimension": "identity",
+        "label": "Business Name",
+        "value": "Coimbatore Steels & Alloys Pvt Ltd",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-doc-name-1785009184715",
+            "source": "Document OCR — Registration Certificate",
+            "snippet": "Name extracted from registration certificate: \"Coimbatore Steels & Alloys Pvt Ltd\"",
+            "retrievedAt": "2026-07-25T19:53:04.715Z",
+            "reliability": 0.91,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-reg-1785009184722",
+            "source": "Indian SME Business Registry (Practice Dataset)",
+            "snippet": "Registry record found: Coimbatore Steels & Alloys Pvt Ltd — Status: active. Flags: Annual filing overdue — last filed 2022-08-15 (48 months ago)",
+            "retrievedAt": "2026-07-25T19:53:04.722Z",
+            "reliability": 0.8,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-002-doc-regnum",
+        "dimension": "identity",
+        "label": "Registration Number",
+        "value": "U27100TN2015PTC098765",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-doc-regnum-1785009184715",
+            "source": "Document OCR — Registration Certificate",
+            "snippet": "Registration number: U27100TN2015PTC098765",
+            "retrievedAt": "2026-07-25T19:53:04.715Z",
+            "reliability": 0.91,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-reg-1785009184722",
+            "source": "Indian SME Business Registry (Practice Dataset)",
+            "snippet": "Registry record found: Coimbatore Steels & Alloys Pvt Ltd — Status: active. Flags: Annual filing overdue — last filed 2022-08-15 (48 months ago)",
+            "retrievedAt": "2026-07-25T19:53:04.722Z",
+            "reliability": 0.8,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-002-doc-address",
+        "dimension": "location",
+        "label": "Registered Address",
+        "value": "15, SIDCO Industrial Estate, Coimbatore, Tamil Nadu 641021",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-doc-addr-1785009184715",
+            "source": "Document OCR — Registration Certificate",
+            "snippet": "Address on certificate: \"15, SIDCO Industrial Estate, Coimbatore, Tamil Nadu 641021\"",
+            "retrievedAt": "2026-07-25T19:53:04.715Z",
+            "reliability": 0.91,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-addr-1785009184724",
+            "source": "Address Verification Service (Mock GIS Data)",
+            "snippet": "Address verified in SIDCO Industrial — Coimbatore. No issues.",
+            "retrievedAt": "2026-07-25T19:53:04.723Z",
+            "reliability": 0.7625,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-002-doc-director",
+        "dimension": "identity",
+        "label": "Director Name",
+        "value": "Rajesh Murugesan",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-doc-dir-1785009184715",
+            "source": "Document OCR — Registration Certificate",
+            "snippet": "Director: Rajesh Murugesan",
+            "retrievedAt": "2026-07-25T19:53:04.715Z",
+            "reliability": 0.91,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-reg-1785009184722",
+            "source": "Indian SME Business Registry (Practice Dataset)",
+            "snippet": "Registry record found: Coimbatore Steels & Alloys Pvt Ltd — Status: active. Flags: Annual filing overdue — last filed 2022-08-15 (48 months ago)",
+            "retrievedAt": "2026-07-25T19:53:04.722Z",
+            "reliability": 0.8,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-002-pan",
+        "dimension": "identity",
+        "label": "PAN",
+        "value": "INVALID123",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-pan-1785009184717",
+            "source": "PAN Extractor",
+            "snippet": "Extracted PAN: INVALID123 (Format valid: false)",
+            "retrievedAt": "2026-07-25T19:53:04.717Z",
+            "reliability": 0.91,
+            "relation": "contradicts"
+          },
+          {
+            "id": "ev-reg-1785009184722",
+            "source": "Indian SME Business Registry (Practice Dataset)",
+            "snippet": "Registry record found: Coimbatore Steels & Alloys Pvt Ltd — Status: active. Flags: Annual filing overdue — last filed 2022-08-15 (48 months ago)",
+            "retrievedAt": "2026-07-25T19:53:04.722Z",
+            "reliability": 0.8,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-002-gst",
+        "dimension": "identity",
+        "label": "GST Number",
+        "value": "33AAACP9876A1Z1",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-gst-1785009184717",
+            "source": "GST Extractor",
+            "snippet": "Extracted GST Number: 33AAACP9876A1Z1",
+            "retrievedAt": "2026-07-25T19:53:04.717Z",
+            "reliability": 0.91,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-reg-1785009184722",
+            "source": "Indian SME Business Registry (Practice Dataset)",
+            "snippet": "Registry record found: Coimbatore Steels & Alloys Pvt Ltd — Status: active. Flags: Annual filing overdue — last filed 2022-08-15 (48 months ago)",
+            "retrievedAt": "2026-07-25T19:53:04.722Z",
+            "reliability": 0.8,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-002-trade",
+        "dimension": "identity",
+        "label": "Trade License",
+        "value": "TL/CBE/2015/098",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-trade-1785009184718",
+            "source": "Trade License Extractor",
+            "snippet": "Extracted Trade License: TL/CBE/2015/098",
+            "retrievedAt": "2026-07-25T19:53:04.718Z",
+            "reliability": 0.91,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-reg-1785009184722",
+            "source": "Indian SME Business Registry (Practice Dataset)",
+            "snippet": "Registry record found: Coimbatore Steels & Alloys Pvt Ltd — Status: active. Flags: Annual filing overdue — last filed 2022-08-15 (48 months ago)",
+            "retrievedAt": "2026-07-25T19:53:04.722Z",
+            "reliability": 0.8,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-002-ownership",
+        "dimension": "location",
+        "label": "Premises Ownership",
+        "value": "rented",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-ownership-1785009184719",
+            "source": "Ownership Extractor",
+            "snippet": "Premises identified as: rented",
+            "retrievedAt": "2026-07-25T19:53:04.719Z",
+            "reliability": 0.91,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-addr-1785009184724",
+            "source": "Address Verification Service (Mock GIS Data)",
+            "snippet": "Address verified in SIDCO Industrial — Coimbatore. No issues.",
+            "retrievedAt": "2026-07-25T19:53:04.723Z",
+            "reliability": 0.7625,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-002-util-address",
+        "dimension": "location",
+        "label": "Utility Bill Address",
+        "value": "8, Anna Nagar, Coimbatore, Tamil Nadu 641002",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-util-addr-1785009184720",
+            "source": "Document OCR — Utility Bill",
+            "snippet": "Address on utility bill: \"8, Anna Nagar, Coimbatore, Tamil Nadu 641002\"",
+            "retrievedAt": "2026-07-25T19:53:04.720Z",
+            "reliability": 0.8190000000000001,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-addr-1785009184724",
+            "source": "Address Verification Service (Mock GIS Data)",
+            "snippet": "Address verified in SIDCO Industrial — Coimbatore. No issues.",
+            "retrievedAt": "2026-07-25T19:53:04.723Z",
+            "reliability": 0.7625,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-002-photo",
+        "dimension": "location",
+        "label": "Photo GPS Verification",
+        "value": "11.01, 76.95",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-photo-1785009184721",
+            "source": "Premises Photo Metadata",
+            "snippet": "Photo EXIF Location: [11.01, 76.95] - Matches claimed address coords: false",
+            "retrievedAt": "2026-07-25T19:53:04.721Z",
+            "reliability": 0.95,
+            "relation": "contradicts"
+          },
+          {
+            "id": "ev-addr-1785009184724",
+            "source": "Address Verification Service (Mock GIS Data)",
+            "snippet": "Address verified in SIDCO Industrial — Coimbatore. No issues.",
+            "retrievedAt": "2026-07-25T19:53:04.723Z",
+            "reliability": 0.7625,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-002-web-presence",
+        "dimension": "digital_presence",
+        "label": "Digital Footprint",
+        "value": "cbsteels.in",
+        "status": "contradicted",
+        "evidence": [
+          {
+            "id": "ev-web-1785009184724",
+            "source": "Web Presence Analysis (Mock OSINT)",
+            "snippet": "Domain: cbsteels.in (0.3 yrs old). Google listing: No. Reviews: 0. Flags: Website lacks SSL certificate — unusual for a legitimate trading business",
+            "retrievedAt": "2026-07-25T19:53:04.724Z",
+            "reliability": 0.45,
+            "relation": "contradicts"
+          }
+        ]
+      }
+    ],
+    "recommendation": "escalate",
+    "recommendationReason": "Multiple independent red flags across 1 dimensions — manual review by senior credit officer required.",
+    "missingEvidence": [
+      "Google Business listing not found — request official Google My Business verification"
+    ],
+    "trace": [
+      {
+        "timestamp": "2026-07-25T19:53:04.512Z",
+        "agent": "orchestrator",
+        "message": "Connected to GeoTrust Kitchen. Investigating Coimbatore Steels & Alloys Pvt Ltd (U27100TN2015PTC098765)"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:04.517Z",
+        "agent": "orchestrator",
+        "message": "Kitchen has 11 tools: document_reader, extractPAN, extractUdyamCertificate, extractGSTCertificate, extractTradeLicense, extractOwnershipProof, checkPremisesPhoto, registry_checker, address_checker, web_presence_checker, score_case"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:04.517Z",
+        "agent": "orchestrator",
+        "message": "Attempting LLM-driven investigation via NVIDIA NIM (meta/llama-3.3-70b-instruct)..."
+      },
+      {
+        "timestamp": "2026-07-25T19:53:04.712Z",
+        "agent": "orchestrator",
+        "message": "NIM API unavailable (403). Switching to deterministic tool-calling sequence."
+      },
+      {
+        "timestamp": "2026-07-25T19:53:04.712Z",
+        "agent": "orchestrator",
+        "message": "Starting deterministic investigation for Coimbatore Steels & Alloys Pvt Ltd"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:04.712Z",
+        "agent": "orchestrator",
+        "message": "Step 1/5 — Calling document_reader for registration certificate"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:04.715Z",
+        "agent": "evidence_challenger",
+        "message": "Extracted 4 claims from registration certificate (quality: 91%)"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:04.715Z",
+        "agent": "orchestrator",
+        "message": "Calling extractPAN for identity verification"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:04.716Z",
+        "agent": "orchestrator",
+        "message": "Calling extractGSTCertificate"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:04.717Z",
+        "agent": "orchestrator",
+        "message": "Calling extractTradeLicense"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:04.717Z",
+        "agent": "orchestrator",
+        "message": "Calling extractOwnershipProof for rented premises"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:04.718Z",
+        "agent": "orchestrator",
+        "message": "Calling document_reader for utility bill"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:04.719Z",
+        "agent": "evidence_challenger",
+        "message": "Extracted utility bill address: \"8, Anna Nagar, Coimbatore, Tamil Nadu 641002\""
+      },
+      {
+        "timestamp": "2026-07-25T19:53:04.719Z",
+        "agent": "orchestrator",
+        "message": "Calling checkPremisesPhoto"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:04.721Z",
+        "agent": "orchestrator",
+        "message": "Step 2/5 — Calling registry_checker — looking up U27100TN2015PTC098765"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:04.722Z",
+        "agent": "evidence_challenger",
+        "message": "Registry flags: Annual filing overdue — last filed 2022-08-15 (48 months ago)"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:04.722Z",
+        "agent": "orchestrator",
+        "message": "Step 3/5 — Calling address_checker — verifying \"42, Unknown Street, Chennai, Tamil Nadu 600001\""
+      },
+      {
+        "timestamp": "2026-07-25T19:53:04.723Z",
+        "agent": "evidence_challenger",
+        "message": "Address verified — matches registry filing"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:04.723Z",
+        "agent": "orchestrator",
+        "message": "Step 4/5 — Calling web_presence_checker — assessing digital footprint"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:04.724Z",
+        "agent": "risk_arbiter",
+        "message": "Web presence concern: Website lacks SSL certificate — unusual for a legitimate trading business"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:04.724Z",
+        "agent": "risk_arbiter",
+        "message": "Step 5/5 — All evidence gathered — calling score_case to compute final verdict"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:04.725Z",
+        "agent": "risk_arbiter",
+        "message": "Verdict: ESCALATE — score 82/100. Multiple independent red flags across 1 dimensions — manual review by senior credit officer required."
+      }
+    ]
+  },
+  {
+    "id": "case-004",
+    "businessName": "Apex Micro Enterprises",
+    "submittedAt": "2026-07-25T19:53:07.616Z",
+    "status": "needs_review",
+    "overallScore": 84,
+    "dimensionScores": [
+      {
+        "dimension": "identity",
+        "score": 90,
+        "driver": "Registry record matches across name, director, and registration number"
+      },
+      {
+        "dimension": "location",
+        "score": 92,
+        "driver": "Address verified in Textile Zone — Tiruppur"
+      },
+      {
+        "dimension": "digital_presence",
+        "score": 50,
+        "driver": "Active website, Google listing, 12 reviews in 0.0-year-old domain"
+      },
+      {
+        "dimension": "document_integrity",
+        "score": 88,
+        "driver": "Document quality 88% — minor legibility issues"
+      }
+    ],
+    "claims": [
+      {
+        "id": "case-004-doc-name",
+        "dimension": "identity",
+        "label": "Business Name",
+        "value": "Apex Micro Enterprises",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-doc-name-1785009187616",
+            "source": "Document OCR — Registration Certificate",
+            "snippet": "Name extracted from registration certificate: \"Apex Micro Enterprises\"",
+            "retrievedAt": "2026-07-25T19:53:07.616Z",
+            "reliability": 0.88,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-reg-1785009187626",
+            "source": "Indian SME Business Registry (Practice Dataset)",
+            "snippet": "Registry record found: Apex Micro Enterprises — Status: active. Flags: Annual filing overdue — last filed 2023-09-30 (34 months ago)",
+            "retrievedAt": "2026-07-25T19:53:07.626Z",
+            "reliability": 0.8,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-004-doc-regnum",
+        "dimension": "identity",
+        "label": "Registration Number",
+        "value": "UDYAM-TN-06-0012345",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-doc-regnum-1785009187616",
+            "source": "Document OCR — Registration Certificate",
+            "snippet": "Registration number: UDYAM-TN-06-0012345",
+            "retrievedAt": "2026-07-25T19:53:07.616Z",
+            "reliability": 0.88,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-reg-1785009187626",
+            "source": "Indian SME Business Registry (Practice Dataset)",
+            "snippet": "Registry record found: Apex Micro Enterprises — Status: active. Flags: Annual filing overdue — last filed 2023-09-30 (34 months ago)",
+            "retrievedAt": "2026-07-25T19:53:07.626Z",
+            "reliability": 0.8,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-004-doc-address",
+        "dimension": "location",
+        "label": "Registered Address",
+        "value": "22, Kamaraj Nagar, Tiruppur, Tamil Nadu 641604",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-doc-addr-1785009187616",
+            "source": "Document OCR — Registration Certificate",
+            "snippet": "Address on certificate: \"22, Kamaraj Nagar, Tiruppur, Tamil Nadu 641604\"",
+            "retrievedAt": "2026-07-25T19:53:07.616Z",
+            "reliability": 0.88,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-addr-1785009187627",
+            "source": "Address Verification Service (Mock GIS Data)",
+            "snippet": "Address verified in Textile Zone — Tiruppur. No issues.",
+            "retrievedAt": "2026-07-25T19:53:07.627Z",
+            "reliability": 0.8875,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-004-doc-director",
+        "dimension": "identity",
+        "label": "Director Name",
+        "value": "Senthil Krishnamurthy",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-doc-dir-1785009187616",
+            "source": "Document OCR — Registration Certificate",
+            "snippet": "Director: Senthil Krishnamurthy",
+            "retrievedAt": "2026-07-25T19:53:07.616Z",
+            "reliability": 0.88,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-reg-1785009187626",
+            "source": "Indian SME Business Registry (Practice Dataset)",
+            "snippet": "Registry record found: Apex Micro Enterprises — Status: active. Flags: Annual filing overdue — last filed 2023-09-30 (34 months ago)",
+            "retrievedAt": "2026-07-25T19:53:07.626Z",
+            "reliability": 0.8,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-004-pan",
+        "dimension": "identity",
+        "label": "PAN",
+        "value": "PLMKO6789J",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-pan-1785009187617",
+            "source": "PAN Extractor",
+            "snippet": "Extracted PAN: PLMKO6789J (Format valid: true)",
+            "retrievedAt": "2026-07-25T19:53:07.617Z",
+            "reliability": 0.88,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-reg-1785009187626",
+            "source": "Indian SME Business Registry (Practice Dataset)",
+            "snippet": "Registry record found: Apex Micro Enterprises — Status: active. Flags: Annual filing overdue — last filed 2023-09-30 (34 months ago)",
+            "retrievedAt": "2026-07-25T19:53:07.626Z",
+            "reliability": 0.8,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-004-udyam",
+        "dimension": "identity",
+        "label": "Udyam Number",
+        "value": "UDYAM-TN-06-0012345",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-udyam-1785009187619",
+            "source": "Udyam Extractor",
+            "snippet": "Extracted Udyam Number: UDYAM-TN-06-0012345",
+            "retrievedAt": "2026-07-25T19:53:07.619Z",
+            "reliability": 0.88,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-reg-1785009187626",
+            "source": "Indian SME Business Registry (Practice Dataset)",
+            "snippet": "Registry record found: Apex Micro Enterprises — Status: active. Flags: Annual filing overdue — last filed 2023-09-30 (34 months ago)",
+            "retrievedAt": "2026-07-25T19:53:07.626Z",
+            "reliability": 0.8,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-004-gst",
+        "dimension": "identity",
+        "label": "GST Number",
+        "value": "33AAGPA5678B1Z9",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-gst-1785009187620",
+            "source": "GST Extractor",
+            "snippet": "Extracted GST Number: 33AAGPA5678B1Z9",
+            "retrievedAt": "2026-07-25T19:53:07.620Z",
+            "reliability": 0.88,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-reg-1785009187626",
+            "source": "Indian SME Business Registry (Practice Dataset)",
+            "snippet": "Registry record found: Apex Micro Enterprises — Status: active. Flags: Annual filing overdue — last filed 2023-09-30 (34 months ago)",
+            "retrievedAt": "2026-07-25T19:53:07.626Z",
+            "reliability": 0.8,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-004-trade",
+        "dimension": "identity",
+        "label": "Trade License",
+        "value": "TL/TPR/2019/332",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-trade-1785009187622",
+            "source": "Trade License Extractor",
+            "snippet": "Extracted Trade License: TL/TPR/2019/332",
+            "retrievedAt": "2026-07-25T19:53:07.622Z",
+            "reliability": 0.88,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-reg-1785009187626",
+            "source": "Indian SME Business Registry (Practice Dataset)",
+            "snippet": "Registry record found: Apex Micro Enterprises — Status: active. Flags: Annual filing overdue — last filed 2023-09-30 (34 months ago)",
+            "retrievedAt": "2026-07-25T19:53:07.626Z",
+            "reliability": 0.8,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-004-ownership",
+        "dimension": "location",
+        "label": "Premises Ownership",
+        "value": "owned",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-ownership-1785009187623",
+            "source": "Ownership Extractor",
+            "snippet": "Premises identified as: owned",
+            "retrievedAt": "2026-07-25T19:53:07.623Z",
+            "reliability": 0.88,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-addr-1785009187627",
+            "source": "Address Verification Service (Mock GIS Data)",
+            "snippet": "Address verified in Textile Zone — Tiruppur. No issues.",
+            "retrievedAt": "2026-07-25T19:53:07.627Z",
+            "reliability": 0.8875,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-004-util-address",
+        "dimension": "location",
+        "label": "Utility Bill Address",
+        "value": "22, Kamaraj Nagar, Tiruppur, Tamil Nadu 641604",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-util-addr-1785009187623",
+            "source": "Document OCR — Utility Bill",
+            "snippet": "Address on utility bill: \"22, Kamaraj Nagar, Tiruppur, Tamil Nadu 641604\"",
+            "retrievedAt": "2026-07-25T19:53:07.623Z",
+            "reliability": 0.792,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-addr-1785009187627",
+            "source": "Address Verification Service (Mock GIS Data)",
+            "snippet": "Address verified in Textile Zone — Tiruppur. No issues.",
+            "retrievedAt": "2026-07-25T19:53:07.627Z",
+            "reliability": 0.8875,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-004-photo",
+        "dimension": "location",
+        "label": "Photo GPS Verification",
+        "value": "11.1085, 77.3411",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-photo-1785009187625",
+            "source": "Premises Photo Metadata",
+            "snippet": "Photo EXIF Location: [11.1085, 77.3411] - Matches claimed address coords: false",
+            "retrievedAt": "2026-07-25T19:53:07.625Z",
+            "reliability": 0.95,
+            "relation": "contradicts"
+          },
+          {
+            "id": "ev-addr-1785009187627",
+            "source": "Address Verification Service (Mock GIS Data)",
+            "snippet": "Address verified in Textile Zone — Tiruppur. No issues.",
+            "retrievedAt": "2026-07-25T19:53:07.627Z",
+            "reliability": 0.8875,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-004-web-presence",
+        "dimension": "digital_presence",
+        "label": "Digital Footprint",
+        "value": "None found",
+        "status": "contradicted",
+        "evidence": [
+          {
+            "id": "ev-web-1785009187628",
+            "source": "Web Presence Analysis (Mock OSINT)",
+            "snippet": "Domain: none (0.0 yrs old). Google listing: Yes. Reviews: 12. Flags: Registered domain but website is inactive/under construction",
+            "retrievedAt": "2026-07-25T19:53:07.628Z",
+            "reliability": 0.55,
+            "relation": "contradicts"
+          }
+        ]
+      }
+    ],
+    "recommendation": "request_evidence",
+    "recommendationReason": "1 contradiction(s) require clarification; 0 additional evidence item(s) needed to complete verification.",
+    "missingEvidence": [],
+    "trace": [
+      {
+        "timestamp": "2026-07-25T19:53:07.407Z",
+        "agent": "orchestrator",
+        "message": "Connected to GeoTrust Kitchen. Investigating Apex Micro Enterprises (UDYAM-TN-06-0012345)"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:07.413Z",
+        "agent": "orchestrator",
+        "message": "Kitchen has 11 tools: document_reader, extractPAN, extractUdyamCertificate, extractGSTCertificate, extractTradeLicense, extractOwnershipProof, checkPremisesPhoto, registry_checker, address_checker, web_presence_checker, score_case"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:07.413Z",
+        "agent": "orchestrator",
+        "message": "Attempting LLM-driven investigation via NVIDIA NIM (meta/llama-3.3-70b-instruct)..."
+      },
+      {
+        "timestamp": "2026-07-25T19:53:07.613Z",
+        "agent": "orchestrator",
+        "message": "NIM API unavailable (403). Switching to deterministic tool-calling sequence."
+      },
+      {
+        "timestamp": "2026-07-25T19:53:07.613Z",
+        "agent": "orchestrator",
+        "message": "Starting deterministic investigation for Apex Micro Enterprises"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:07.613Z",
+        "agent": "orchestrator",
+        "message": "Step 1/5 — Calling document_reader for registration certificate"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:07.616Z",
+        "agent": "evidence_challenger",
+        "message": "Extracted 4 claims from registration certificate (quality: 88%)"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:07.616Z",
+        "agent": "orchestrator",
+        "message": "Calling extractPAN for identity verification"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:07.617Z",
+        "agent": "orchestrator",
+        "message": "Calling extractUdyamCertificate"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:07.619Z",
+        "agent": "orchestrator",
+        "message": "Calling extractGSTCertificate"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:07.620Z",
+        "agent": "orchestrator",
+        "message": "Calling extractTradeLicense"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:07.622Z",
+        "agent": "orchestrator",
+        "message": "Calling extractOwnershipProof for owned premises"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:07.623Z",
+        "agent": "orchestrator",
+        "message": "Calling document_reader for utility bill"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:07.624Z",
+        "agent": "evidence_challenger",
+        "message": "Extracted utility bill address: \"22, Kamaraj Nagar, Tiruppur, Tamil Nadu 641604\""
+      },
+      {
+        "timestamp": "2026-07-25T19:53:07.624Z",
+        "agent": "orchestrator",
+        "message": "Calling checkPremisesPhoto"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:07.625Z",
+        "agent": "orchestrator",
+        "message": "Step 2/5 — Calling registry_checker — looking up UDYAM-TN-06-0012345"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:07.626Z",
+        "agent": "evidence_challenger",
+        "message": "Registry flags: Annual filing overdue — last filed 2023-09-30 (34 months ago)"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:07.626Z",
+        "agent": "orchestrator",
+        "message": "Step 3/5 — Calling address_checker — verifying \"22, Kamaraj Nagar, Tiruppur, Tamil Nadu 641604\""
+      },
+      {
+        "timestamp": "2026-07-25T19:53:07.627Z",
+        "agent": "evidence_challenger",
+        "message": "Address verified — matches registry filing"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:07.627Z",
+        "agent": "orchestrator",
+        "message": "Step 4/5 — Calling web_presence_checker — assessing digital footprint"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:07.628Z",
+        "agent": "risk_arbiter",
+        "message": "Web presence concern: Registered domain but website is inactive/under construction"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:07.628Z",
+        "agent": "risk_arbiter",
+        "message": "Step 5/5 — All evidence gathered — calling score_case to compute final verdict"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:07.630Z",
+        "agent": "risk_arbiter",
+        "message": "Verdict: REQUEST_EVIDENCE — score 84/100. 1 contradiction(s) require clarification; 0 additional evidence item(s) needed to complete verification."
+      }
+    ]
+  },
+  {
+    "id": "case-005",
+    "businessName": "Vibrant Logistics Pvt Ltd",
+    "submittedAt": "2026-07-25T19:53:10.516Z",
+    "status": "escalated",
+    "overallScore": 52,
+    "dimensionScores": [
+      {
+        "dimension": "identity",
+        "score": 71,
+        "driver": "1 of 1 identity claims verified"
+      },
+      {
+        "dimension": "location",
+        "score": 38,
+        "driver": "Address contradiction — claimed address conflicts with registry or utility bill"
+      },
+      {
+        "dimension": "digital_presence",
+        "score": 27,
+        "driver": "Zero verified digital footprint — no reviews, no Google listing"
+      },
+      {
+        "dimension": "document_integrity",
+        "score": 60,
+        "driver": "Poor document quality (60%) — fields partially illegible, manual review needed"
+      }
+    ],
+    "claims": [
+      {
+        "id": "case-005-pan",
+        "dimension": "identity",
+        "label": "PAN",
+        "value": "UNKNOWN",
+        "status": "verified",
+        "evidence": [
+          {
+            "id": "ev-pan-1785009190519",
+            "source": "PAN Extractor",
+            "snippet": "Extracted PAN: UNKNOWN (Format valid: false)",
+            "retrievedAt": "2026-07-25T19:53:10.519Z",
+            "reliability": 0.6,
+            "relation": "contradicts"
+          },
+          {
+            "id": "ev-reg-1785009190526",
+            "source": "Indian SME Business Registry (Practice Dataset)",
+            "snippet": "Registry record found: Vibrant Logistics Pvt Ltd — Status: active. Flags: Annual filing overdue — last filed 2023-11-20 (33 months ago)",
+            "retrievedAt": "2026-07-25T19:53:10.526Z",
+            "reliability": 0.8,
+            "relation": "supports"
+          }
+        ]
+      },
+      {
+        "id": "case-005-ownership",
+        "dimension": "location",
+        "label": "Premises Ownership",
+        "value": "rented",
+        "status": "contradicted",
+        "evidence": [
+          {
+            "id": "ev-ownership-1785009190522",
+            "source": "Ownership Extractor",
+            "snippet": "Premises identified as: rented",
+            "retrievedAt": "2026-07-25T19:53:10.522Z",
+            "reliability": 0.6,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-addr-1785009190528",
+            "source": "Address Verification Service (Mock GIS Data)",
+            "snippet": "Address verified in BKC Financial District — Mumbai. Issues: Utility bill address doesn't match claimed address: utility shows \"Address not legible\", claimed \"Level 4, Trade Centre, Andheri East, Mumbai, Maharashtra 400059\"",
+            "retrievedAt": "2026-07-25T19:53:10.528Z",
+            "reliability": 0.625,
+            "relation": "contradicts"
+          }
+        ]
+      },
+      {
+        "id": "case-005-util-address",
+        "dimension": "location",
+        "label": "Utility Bill Address",
+        "value": "Address not legible",
+        "status": "contradicted",
+        "evidence": [
+          {
+            "id": "ev-util-addr-1785009190523",
+            "source": "Document OCR — Utility Bill",
+            "snippet": "Address on utility bill: \"Address not legible\"",
+            "retrievedAt": "2026-07-25T19:53:10.523Z",
+            "reliability": 0.54,
+            "relation": "supports"
+          },
+          {
+            "id": "ev-addr-1785009190528",
+            "source": "Address Verification Service (Mock GIS Data)",
+            "snippet": "Address verified in BKC Financial District — Mumbai. Issues: Utility bill address doesn't match claimed address: utility shows \"Address not legible\", claimed \"Level 4, Trade Centre, Andheri East, Mumbai, Maharashtra 400059\"",
+            "retrievedAt": "2026-07-25T19:53:10.528Z",
+            "reliability": 0.625,
+            "relation": "contradicts"
+          }
+        ]
+      },
+      {
+        "id": "case-005-web-presence",
+        "dimension": "digital_presence",
+        "label": "Digital Footprint",
+        "value": "None found",
+        "status": "contradicted",
+        "evidence": [
+          {
+            "id": "ev-web-1785009190529",
+            "source": "Web Presence Analysis (Mock OSINT)",
+            "snippet": "No verifiable digital footprint found for \"Vibrant Logistics Pvt Ltd\"",
+            "retrievedAt": "2026-07-25T19:53:10.529Z",
+            "reliability": 0.3,
+            "relation": "contradicts"
+          }
+        ]
+      }
+    ],
+    "recommendation": "escalate",
+    "recommendationReason": "Multiple independent red flags across 3 dimensions — manual review by senior credit officer required.",
+    "missingEvidence": [
+      "Google Business listing not found — request official Google My Business verification",
+      "Utility bill showing the current operating address",
+      "Notarised letter explaining address discrepancy",
+      "Latest electricity bill or municipal tax receipt for business premises"
+    ],
+    "trace": [
+      {
+        "timestamp": "2026-07-25T19:53:10.302Z",
+        "agent": "orchestrator",
+        "message": "Connected to GeoTrust Kitchen. Investigating Vibrant Logistics Pvt Ltd (U63090MH2019PTC567890)"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:10.309Z",
+        "agent": "orchestrator",
+        "message": "Kitchen has 11 tools: document_reader, extractPAN, extractUdyamCertificate, extractGSTCertificate, extractTradeLicense, extractOwnershipProof, checkPremisesPhoto, registry_checker, address_checker, web_presence_checker, score_case"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:10.309Z",
+        "agent": "orchestrator",
+        "message": "Attempting LLM-driven investigation via NVIDIA NIM (meta/llama-3.3-70b-instruct)..."
+      },
+      {
+        "timestamp": "2026-07-25T19:53:10.514Z",
+        "agent": "orchestrator",
+        "message": "NIM API unavailable (403). Switching to deterministic tool-calling sequence."
+      },
+      {
+        "timestamp": "2026-07-25T19:53:10.514Z",
+        "agent": "orchestrator",
+        "message": "Starting deterministic investigation for Vibrant Logistics Pvt Ltd"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:10.514Z",
+        "agent": "orchestrator",
+        "message": "Step 1/5 — Calling document_reader for registration certificate"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:10.517Z",
+        "agent": "orchestrator",
+        "message": "Calling extractPAN for identity verification"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:10.519Z",
+        "agent": "orchestrator",
+        "message": "Calling extractTradeLicense"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:10.521Z",
+        "agent": "orchestrator",
+        "message": "Calling extractOwnershipProof for undefined premises"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:10.522Z",
+        "agent": "orchestrator",
+        "message": "Calling document_reader for utility bill"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:10.523Z",
+        "agent": "evidence_challenger",
+        "message": "Extracted utility bill address: \"Address not legible\""
+      },
+      {
+        "timestamp": "2026-07-25T19:53:10.523Z",
+        "agent": "orchestrator",
+        "message": "Calling checkPremisesPhoto"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:10.524Z",
+        "agent": "orchestrator",
+        "message": "Step 2/5 — Calling registry_checker — looking up U63090MH2019PTC567890"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:10.527Z",
+        "agent": "evidence_challenger",
+        "message": "Registry flags: Annual filing overdue — last filed 2023-11-20 (33 months ago)"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:10.527Z",
+        "agent": "orchestrator",
+        "message": "Step 3/5 — Calling address_checker — verifying \"Level 4, Trade Centre, Andheri East, Mumbai, Maharashtra 400059\""
+      },
+      {
+        "timestamp": "2026-07-25T19:53:10.528Z",
+        "agent": "evidence_challenger",
+        "message": "Address issues: Utility bill address doesn't match claimed address: utility shows \"Address not legible\", claimed \"Level 4, Trade Centre, Andheri East, Mumbai, Maharashtra 400059\""
+      },
+      {
+        "timestamp": "2026-07-25T19:53:10.528Z",
+        "agent": "evidence_challenger",
+        "message": "Address verified — matches registry filing"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:10.528Z",
+        "agent": "orchestrator",
+        "message": "Step 4/5 — Calling web_presence_checker — assessing digital footprint"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:10.529Z",
+        "agent": "risk_arbiter",
+        "message": "Web presence concern: No web presence data found for \"Vibrant Logistics Pvt Ltd\""
+      },
+      {
+        "timestamp": "2026-07-25T19:53:10.529Z",
+        "agent": "risk_arbiter",
+        "message": "Step 5/5 — All evidence gathered — calling score_case to compute final verdict"
+      },
+      {
+        "timestamp": "2026-07-25T19:53:10.531Z",
+        "agent": "risk_arbiter",
+        "message": "Verdict: ESCALATE — score 52/100. Multiple independent red flags across 3 dimensions — manual review by senior credit officer required."
+      }
+    ]
+  }
+]
