@@ -75,6 +75,18 @@ const WEB_PRESENCE_DB: Record<string, {
         sslValid: true,
         lastCrawled: '2024-01-11T00:00:00Z',
     },
+    'nilgiri coffee traders': {
+        domain: 'nilgiricoffeetraders.com',
+        domainAgeYears: 4.5,
+        hasSocialMedia: true,
+        hasGoogleBusinessListing: true,
+        hasNewsOrPR: false,
+        reviewCount: 42,
+        averageRating: 4.5,
+        websiteActive: true,
+        sslValid: true,
+        lastCrawled: '2024-01-16T00:00:00Z',
+    },
 };
 
 const WebPresenceCheckerSchema = z.object({
